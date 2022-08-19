@@ -12,17 +12,40 @@ part 'controller.g.dart';
 class Controller = ControllerBase with _$Controller;
 abstract class ControllerBase with Store{
 
-  getVersao({required String versao}){
+  @observable
+  String versao = 'nvi';
+  @observable
+  String livro = 'gn';
+  @observable
+  int capitulo = 1;
+  @observable
+  int versiculo = 1;
+
+  List bible = [];
+
+  @computed
+  bool get getBible{
     if(versao=='nvi')
-      return VersionNvi().bible;
+      bible = VersionNvi().bible;
     else if(versao=='acf')
-      return VersionAcf().bible;
+      bible = VersionAcf().bible;
     else
-      return VersionAa().bible;
+      bible = VersionAa().bible;
+    return true;
   }
 
-  getVersiculos({required String versao, required String livro, required int capitulo, int? versiculo}) {
-    List bible = getVersao(versao: versao);
+  @computed
+  List get getLivros{
+    getBible;
+    List<Map> itens =[];
+    for (var element in bible) {
+      print(element['abbrev']);
+      itens.add({'abrev': element['abbrev'], 'nome': element['name']});
+    }
+    return itens;
+  }
+
+  getVersiculos({required String livro, required int capitulo, int? versiculo}) {
     for (var element in bible) {
       if( element['abbrev'] == livro ){
         Object? obj = element['chapters'];
@@ -35,15 +58,7 @@ abstract class ControllerBase with Store{
     }
   }
 
-  getLivros({required String versao}) {
-    List bible = getVersao(versao: versao);
-    for (var element in bible) {
-      print('${element['abbrev'].toString().toUpperCase()} - ${element['name']}');
-    }
-  }
-
-  getCapitulos({required String versao, required String livro}) {
-    List bible = getVersao(versao: versao);
+  getCapitulos({required String livro}) {
     for (var element in bible) {
       if( element['abbrev'] == livro ){
         Object? obj = element['chapters'];
@@ -58,8 +73,7 @@ abstract class ControllerBase with Store{
     }
   }
 
-  getNumVersiculos({required String versao, required String livro, required int capitulo}) {
-    List bible = getVersao(versao: versao);
+  getNumVersiculos({required String livro, required int capitulo}) {
     for (var element in bible) {
       if( element['abbrev'] == livro ){
         Object? obj = element['chapters'];

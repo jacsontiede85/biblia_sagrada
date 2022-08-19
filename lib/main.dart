@@ -1,12 +1,16 @@
 import 'package:biblia_sagrada/controller/controller.dart';
+import 'package:biblia_sagrada/home/home.page.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 void main() {
   Controller controller = Controller();
-  controller.getVersiculos(versao: 'nvi', livro: 'gn', capitulo: 50);
-  controller.getLivros(versao: 'nvi', );
-  controller.getCapitulos(versao: 'nvi', livro: 'dt');
-  controller.getNumVersiculos(versao: 'nvi', livro: 'ap', capitulo: 22);
+  // controller.getVersiculos(versao: 'nvi', livro: 'gn', capitulo: 50);
+  // controller.getCapitulos(versao: 'nvi', livro: 'dt');
+  // controller.getNumVersiculos(versao: 'nvi', livro: 'ap', capitulo: 22);
+
+  GetIt getIt = GetIt.I;
+  getIt.registerSingleton<Controller>(Controller());
 
   runApp(const MyApp());
 }
@@ -22,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Bíblia Sagrada'),
+      home: const HomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
