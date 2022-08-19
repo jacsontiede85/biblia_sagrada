@@ -56,8 +56,8 @@ class _LeituraPageState extends State<LeituraPage>{
             ? position
             : max
         ).index;
-        print('Min index: $min ::: Max index: $max');
-        controller.versiculoSelecionado = min+2;
+        // print('Min index: $min ::: Max index: $max');
+        // controller.versiculoSelecionado = min+2;
       }
     });
   }
