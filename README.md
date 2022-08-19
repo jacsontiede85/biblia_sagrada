@@ -1,4 +1,4 @@
-# biblia_sagrada
+# Bíblia Sagrada
 
 Bíblia Sagrada (NVI, ACF, AA)
 
