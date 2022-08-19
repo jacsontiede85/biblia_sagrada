@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:biblia_sagrada/controller/controller.dart';
+import 'package:biblia_sagrada/home/home.leitura.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   @override
   void initState() {
     tabController = TabController(length: 3, vsync: this );
+    controller.getBible;
     super.initState();
   }
 
@@ -39,47 +41,152 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
+        title: Text('Bíblia Sagrada', style: TextStyle(color: fonteColor, fontSize: fontSize+2),),
         backgroundColor: Colors.black54,
         elevation: 0.0,
-        toolbarHeight: 0,
+        toolbarHeight: 30,
         bottom: TabBar(
           controller: tabController,
           tabs: [
-            Text('Livro', style: TextStyle(color: fonteColor, fontSize: fontSize+2),),
-            Text('Capítulo', style: TextStyle(color: fonteColor, fontSize: fontSize+2),),
-            Text('Versículo', style: TextStyle(color: fonteColor, fontSize: fontSize+2),),
+            Text('Livro', style: TextStyle(color: fonteColor, fontSize: fontSize),),
+            Text('Capítulo', style: TextStyle(color: fonteColor, fontSize: fontSize),),
+            Text('Versículo', style: TextStyle(color: fonteColor, fontSize: fontSize),),
           ],
         ),
       ),
-      body: Observer(builder: (_)=>
-          ListView.builder(
-            itemCount: controller.getLivros.length,
-            itemBuilder: (context, index) => Container(
-              padding: EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 15),
-              decoration: BoxDecoration(
-                border: Border(top: BorderSide(color: Colors.grey.shade600, width: 1.0, ),),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Text(
-                      '${controller.getLivros[index]['abrev']}'.toUpperCase(),
-                      style: TextStyle(color: fonteColor, fontSize: fontSize-2),
-                    ),
+      body: TabBarView(
+        controller: tabController,
+        children: [
+
+          //SELEÇÃO DE LIVROS
+          Observer(builder: (_)=>
+              Padding(
+                  padding: EdgeInsets.only(top: 15),
+                  child: ListView.builder(
+                    itemCount: controller.getLivros.length,
+                    itemBuilder: (context, index) =>
+                        InkWell(
+                        onTap: (){
+                          controller.livroSelecionado = '${controller.getLivros[index]['abrev']}';
+                          controller.nomeLivroSelecionado = '${controller.getLivros[index]['nome']}';
+                          tabController.animateTo(1, duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubic);
+                        },
+                        child: Container(
+                            padding: EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 15),
+                            decoration: BoxDecoration(
+                              border: Border(top: BorderSide(color: Colors.grey.shade900, width: 1.0, ),),
+                              color: controller.livroSelecionado == '${controller.getLivros[index]['abrev']}' ? Colors.grey.shade800 : Colors.transparent,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    '${controller.getLivros[index]['abrev']}'.toUpperCase(),
+                                    style: TextStyle(color: fonteColor, fontSize: fontSize-2),
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                Expanded(
+                                  flex: 5,
+                                  child: Text(
+                                    '${controller.getLivros[index]['nome']}',
+                                    style: TextStyle(color: fonteColor, fontSize: fontSize),
+                                  ),
+                                ),
+                              ],
+                            )
+                        ),
+                      )
                   ),
-                  SizedBox(width: 10,),
-                  Expanded(
-                    flex: 5,
-                    child: Text(
-                      '${controller.getLivros[index]['nome']}',
-                      style: TextStyle(color: fonteColor, fontSize: fontSize),
-                    ),
-                  ),
-                ],
               )
-            ),
           ),
+
+
+          //SELEÇÃO DE CAPITULOS
+          Observer(builder: (_)=>
+              Padding(
+                padding: EdgeInsets.only(top: 15),
+                child: SingleChildScrollView(
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    children: controller.getCapitulos.map((value) =>
+                        InkWell(
+                          onTap: (){
+                            controller.capituloSelecionado = int.parse(value.toString());
+                            tabController.animateTo(2, duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubic);
+                          },
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                  color: controller.capituloSelecionado == int.parse(value.toString()) ? Colors.grey.shade800 : Colors.transparent,
+                                  border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey.shade800
+                                  ),
+                                ),
+                                width: 60,
+                                height: 60,
+                                child: Text(
+                                  '$value'.toUpperCase(),
+                                  style: TextStyle(color: fonteColor, fontSize: fontSize-2),
+                                ),
+                              )
+                          ),
+                        )
+                    ).toList(),
+                  ),
+                ),
+              )
+          ),
+
+
+          //SELEÇÃO DE VERSICULOS
+          Observer(builder: (_)=>
+              Padding(
+                padding: EdgeInsets.only(top: 15),
+                child: SingleChildScrollView(
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    children: controller.getVersiculos.map((value) =>
+                        InkWell(
+                          onTap: (){
+                            controller.versiculoSelecionado = int.parse(value.toString());
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> LeituraPage()));
+                          },
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                  color: controller.versiculoSelecionado == int.parse(value.toString()) ? Colors.grey.shade800 : Colors.transparent,
+                                  border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey.shade800
+                                  ),
+                                ),
+                                width: 60,
+                                height: 60,
+                                child: Text(
+                                  '$value'.toUpperCase(),
+                                  style: TextStyle(color: fonteColor, fontSize: fontSize-2),
+                                ),
+                              )
+                          ),
+                        )
+                    ).toList(),
+                  ),
+                )
+              )
+          ),
+
+        ],
       )
     );
   }

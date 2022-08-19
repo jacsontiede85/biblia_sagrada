@@ -22,6 +22,28 @@ mixin _$Controller on ControllerBase, Store {
       (_$getLivrosComputed ??= Computed<List<dynamic>>(() => super.getLivros,
               name: 'ControllerBase.getLivros'))
           .value;
+  Computed<List<dynamic>>? _$getCapitulosComputed;
+
+  @override
+  List<dynamic> get getCapitulos => (_$getCapitulosComputed ??=
+          Computed<List<dynamic>>(() => super.getCapitulos,
+              name: 'ControllerBase.getCapitulos'))
+      .value;
+  Computed<List<dynamic>>? _$getVersiculosComputed;
+
+  @override
+  List<dynamic> get getVersiculos => (_$getVersiculosComputed ??=
+          Computed<List<dynamic>>(() => super.getVersiculos,
+              name: 'ControllerBase.getVersiculos'))
+      .value;
+  Computed<List<dynamic>>? _$getVersiculosExibirLeituraComputed;
+
+  @override
+  List<dynamic> get getVersiculosExibirLeitura =>
+      (_$getVersiculosExibirLeituraComputed ??= Computed<List<dynamic>>(
+              () => super.getVersiculosExibirLeitura,
+              name: 'ControllerBase.getVersiculosExibirLeitura'))
+          .value;
 
   late final _$versaoAtom =
       Atom(name: 'ControllerBase.versao', context: context);
@@ -39,50 +61,85 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
-  late final _$livroAtom = Atom(name: 'ControllerBase.livro', context: context);
+  late final _$livroSelecionadoAtom =
+      Atom(name: 'ControllerBase.livroSelecionado', context: context);
 
   @override
-  String get livro {
-    _$livroAtom.reportRead();
-    return super.livro;
+  String get livroSelecionado {
+    _$livroSelecionadoAtom.reportRead();
+    return super.livroSelecionado;
   }
 
   @override
-  set livro(String value) {
-    _$livroAtom.reportWrite(value, super.livro, () {
-      super.livro = value;
+  set livroSelecionado(String value) {
+    _$livroSelecionadoAtom.reportWrite(value, super.livroSelecionado, () {
+      super.livroSelecionado = value;
     });
   }
 
-  late final _$capituloAtom =
-      Atom(name: 'ControllerBase.capitulo', context: context);
+  late final _$nomeLivroSelecionadoAtom =
+      Atom(name: 'ControllerBase.nomeLivroSelecionado', context: context);
 
   @override
-  int get capitulo {
-    _$capituloAtom.reportRead();
-    return super.capitulo;
+  String get nomeLivroSelecionado {
+    _$nomeLivroSelecionadoAtom.reportRead();
+    return super.nomeLivroSelecionado;
   }
 
   @override
-  set capitulo(int value) {
-    _$capituloAtom.reportWrite(value, super.capitulo, () {
-      super.capitulo = value;
+  set nomeLivroSelecionado(String value) {
+    _$nomeLivroSelecionadoAtom.reportWrite(value, super.nomeLivroSelecionado,
+        () {
+      super.nomeLivroSelecionado = value;
     });
   }
 
-  late final _$versiculoAtom =
-      Atom(name: 'ControllerBase.versiculo', context: context);
+  late final _$capituloSelecionadoAtom =
+      Atom(name: 'ControllerBase.capituloSelecionado', context: context);
 
   @override
-  int get versiculo {
-    _$versiculoAtom.reportRead();
-    return super.versiculo;
+  int get capituloSelecionado {
+    _$capituloSelecionadoAtom.reportRead();
+    return super.capituloSelecionado;
   }
 
   @override
-  set versiculo(int value) {
-    _$versiculoAtom.reportWrite(value, super.versiculo, () {
-      super.versiculo = value;
+  set capituloSelecionado(int value) {
+    _$capituloSelecionadoAtom.reportWrite(value, super.capituloSelecionado, () {
+      super.capituloSelecionado = value;
+    });
+  }
+
+  late final _$versiculoSelecionadoAtom =
+      Atom(name: 'ControllerBase.versiculoSelecionado', context: context);
+
+  @override
+  int get versiculoSelecionado {
+    _$versiculoSelecionadoAtom.reportRead();
+    return super.versiculoSelecionado;
+  }
+
+  @override
+  set versiculoSelecionado(int value) {
+    _$versiculoSelecionadoAtom.reportWrite(value, super.versiculoSelecionado,
+        () {
+      super.versiculoSelecionado = value;
+    });
+  }
+
+  late final _$pesquisarAtom =
+      Atom(name: 'ControllerBase.pesquisar', context: context);
+
+  @override
+  String get pesquisar {
+    _$pesquisarAtom.reportRead();
+    return super.pesquisar;
+  }
+
+  @override
+  set pesquisar(String value) {
+    _$pesquisarAtom.reportWrite(value, super.pesquisar, () {
+      super.pesquisar = value;
     });
   }
 
@@ -90,11 +147,16 @@ mixin _$Controller on ControllerBase, Store {
   String toString() {
     return '''
 versao: ${versao},
-livro: ${livro},
-capitulo: ${capitulo},
-versiculo: ${versiculo},
+livroSelecionado: ${livroSelecionado},
+nomeLivroSelecionado: ${nomeLivroSelecionado},
+capituloSelecionado: ${capituloSelecionado},
+versiculoSelecionado: ${versiculoSelecionado},
+pesquisar: ${pesquisar},
 getBible: ${getBible},
-getLivros: ${getLivros}
+getLivros: ${getLivros},
+getCapitulos: ${getCapitulos},
+getVersiculos: ${getVersiculos},
+getVersiculosExibirLeitura: ${getVersiculosExibirLeitura}
     ''';
   }
 }

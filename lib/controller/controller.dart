@@ -15,11 +15,15 @@ abstract class ControllerBase with Store{
   @observable
   String versao = 'nvi';
   @observable
-  String livro = 'gn';
+  String livroSelecionado = '';
   @observable
-  int capitulo = 1;
+  String nomeLivroSelecionado = '';
   @observable
-  int versiculo = 1;
+  int capituloSelecionado = 0;
+  @observable
+  int versiculoSelecionado = 0;
+  @observable
+  String pesquisar='';
 
   List bible = [];
 
@@ -36,56 +40,68 @@ abstract class ControllerBase with Store{
 
   @computed
   List get getLivros{
-    getBible;
     List<Map> itens =[];
     for (var element in bible) {
-      print(element['abbrev']);
-      itens.add({'abrev': element['abbrev'], 'nome': element['name']});
+      if(pesquisar.isEmpty)
+        itens.add({'abrev': element['abbrev'], 'nome': element['name']});
+      else
+        if(element['abbrev'].toString().toLowerCase().contains(pesquisar.toLowerCase()) || element['name'].toString().toLowerCase().contains(pesquisar.toLowerCase()))
+          itens.add({'abrev': element['abbrev'], 'nome': element['name']});
     }
     return itens;
   }
 
-  getVersiculos({required String livro, required int capitulo, int? versiculo}) {
+  @computed
+  List get getCapitulos{
+    List itens =[];
     for (var element in bible) {
-      if( element['abbrev'] == livro ){
-        Object? obj = element['chapters'];
-        List capitulos = jsonDecode(jsonEncode(obj));
-        for(var versiculos in capitulos[capitulo-1]){
-          print(versiculos);
-        }
-        return;
-      }
-    }
-  }
-
-  getCapitulos({required String livro}) {
-    for (var element in bible) {
-      if( element['abbrev'] == livro ){
+      if( element['abbrev'] == livroSelecionado ){
         Object? obj = element['chapters'];
         List capitulos = jsonDecode(jsonEncode(obj));
         int count = 1;
         for(var versiculos in capitulos){
-          print(count);
+          itens.add(count);
           count++;
         }
-        return;
+        return itens;
       }
     }
+    return itens;
   }
 
-  getNumVersiculos({required String livro, required int capitulo}) {
+  @computed
+  List get getVersiculos{
+    List itens =[];
     for (var element in bible) {
-      if( element['abbrev'] == livro ){
+      if( element['abbrev'] == livroSelecionado ){
         Object? obj = element['chapters'];
         List capitulos = jsonDecode(jsonEncode(obj));
         int count = 1;
-        for(var versiculos in capitulos[capitulo-1]){
-          print(count);
+        for(var versiculos in capitulos[capituloSelecionado-1]){
+          itens.add(count);
           count++;
         }
-        return;
+        return itens;
       }
     }
+    return itens;
   }
+
+  @computed
+  List get getVersiculosExibirLeitura{
+    List<String> vers=[];
+    for (var element in bible) {
+      if( element['abbrev'] == livroSelecionado ){
+        Object? obj = element['chapters'];
+        List capitulos = jsonDecode(jsonEncode(obj));
+        for(var versiculos in capitulos[capituloSelecionado-1]){
+          vers.add(versiculos);
+        }
+        return vers;
+      }
+    }
+    return vers;
+  }
+
 
 }
