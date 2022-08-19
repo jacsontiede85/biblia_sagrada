@@ -1,6 +1,13 @@
+import 'package:biblia_sagrada/controller.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  Controller controller = Controller();
+  controller.getVersiculos(livro: 'gn', capitulo: 50);
+  controller.getLivros();
+  controller.getCapitulos(livro: 'dt');
+  controller.getNumVersiculos(livro: 'ap', capitulo: 22);
+
   runApp(const MyApp());
 }
 
