@@ -92,7 +92,7 @@ class _LeituraPageState extends State<LeituraPage>{
       body: Observer(builder: (_)=>
           Column(
             children: [
-              Container(decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey.shade600, width: 1.0, ),),),),
+              Container(decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey.shade600, width: 0.5, ),),),),
               Flexible(
                 child: ScrollablePositionedList.builder(
                     itemScrollController: itemScrollController,

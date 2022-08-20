@@ -47,6 +47,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
         toolbarHeight: 30,
         bottom: TabBar(
           controller: tabController,
+          padding: EdgeInsets.only(bottom: 0),
+          labelPadding: EdgeInsets.only(bottom: 7),
           tabs: [
             Text('Livro', style: TextStyle(color: fonteColor, fontSize: fontSize),),
             Text('Capítulo', style: TextStyle(color: fonteColor, fontSize: fontSize),),
@@ -62,43 +64,87 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           Observer(builder: (_)=>
               Padding(
                   padding: EdgeInsets.only(top: 15),
-                  child: ListView.builder(
-                    itemCount: controller.getLivros.length,
-                    itemBuilder: (context, index) =>
-                        InkWell(
-                        onTap: (){
-                          controller.livroSelecionado = '${controller.getLivros[index]['abrev']}';
-                          controller.nomeLivroSelecionado = '${controller.getLivros[index]['nome']}';
-                          tabController.animateTo(1, duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubic);
-                        },
-                        child: Container(
-                            padding: EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 15),
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 15),
                             decoration: BoxDecoration(
-                              border: Border(top: BorderSide(color: Colors.grey.shade900, width: 1.0, ),),
-                              color: controller.livroSelecionado == '${controller.getLivros[index]['abrev']}' ? Colors.grey.shade800 : Colors.transparent,
+                              borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                              color: Colors.grey.shade900,
+                              border: Border.all(
+                                  width: 1,
+                                  color: Colors.grey.shade600
+                              ),
                             ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    '${controller.getLivros[index]['abrev']}'.toUpperCase(),
-                                    style: TextStyle(color: fonteColor, fontSize: fontSize-2),
+                            height: 35,
+                            child: TextField(
+                                style: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  contentPadding: EdgeInsets.only(left: 0, bottom: 5, top: 3, right: 30),
+                                  hintText: 'Pesquisar livro',
+                                  hintStyle: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    size: 20,
+                                    color: Theme.of(context).colorScheme.secondary,
                                   ),
                                 ),
-                                SizedBox(width: 10,),
-                                Expanded(
-                                  flex: 5,
-                                  child: Text(
-                                    '${controller.getLivros[index]['nome']}',
-                                    style: TextStyle(color: fonteColor, fontSize: fontSize),
+                                maxLines: 1,
+                                onChanged: (value) => controller.pesquisar = value
+                            ),
+                          )
+                      ),
+                      Flexible(
+                        child: ListView.builder(
+                            itemCount: controller.getLivros.length,
+                            itemBuilder: (context, index) =>
+                                InkWell(
+                                  onTap: (){
+                                    controller.livroSelecionado = '${controller.getLivros[index]['abrev']}';
+                                    controller.capituloSelecionado = 1;
+                                    controller.versiculoSelecionado = 0;
+                                    controller.nomeLivroSelecionado = '${controller.getLivros[index]['nome']}';
+                                    tabController.animateTo(1, duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubic);
+                                  },
+                                  child: Container(
+                                      padding: EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 15),
+                                      decoration: BoxDecoration(
+                                        border: Border(top: BorderSide(color: Colors.grey.shade900, width: 0.5, ),),
+                                        color: controller.livroSelecionado == '${controller.getLivros[index]['abrev']}' ? Colors.grey.shade800 : Colors.transparent,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              '${controller.getLivros[index]['abrev']}'.toUpperCase(),
+                                              style: TextStyle(color: fonteColor, fontSize: fontSize-2),
+                                            ),
+                                          ),
+                                          SizedBox(width: 10,),
+                                          Expanded(
+                                            flex: 5,
+                                            child: Text(
+                                              '${controller.getLivros[index]['nome']}',
+                                              style: TextStyle(color: fonteColor, fontSize: fontSize),
+                                            ),
+                                          ),
+                                        ],
+                                      )
                                   ),
-                                ),
-                              ],
-                            )
+                                )
                         ),
                       )
-                  ),
+                    ],
+                  )
               )
           ),
 
