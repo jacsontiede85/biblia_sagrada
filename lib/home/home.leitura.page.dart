@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, curly_braces_in_flow_control_structures
 
 import 'package:biblia_sagrada/controller/controller.dart';
+import 'package:biblia_sagrada/home/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -13,7 +14,7 @@ class LeituraPage extends StatefulWidget {
   State<LeituraPage> createState() => _LeituraPageState();
 }
 
-class _LeituraPageState extends State<LeituraPage>{
+class _LeituraPageState extends State<LeituraPage> with Widgets{
   ItemScrollController itemScrollController = ItemScrollController();
   ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   final controller = GetIt.I.get<Controller>();
@@ -39,6 +40,7 @@ class _LeituraPageState extends State<LeituraPage>{
     itemPositionsListener = ItemPositionsListener.create();
 
     itemPositionsListener.itemPositions.addListener((){
+      // ignore: unused_local_variable
       int min, max, index;
       if (itemPositionsListener.itemPositions.value.isNotEmpty) {
         min = itemPositionsListener.itemPositions.value
@@ -56,12 +58,20 @@ class _LeituraPageState extends State<LeituraPage>{
             ? position
             : max
         ).index;
-        // print('Min index: $min ::: Max index: $max');
-        // controller.versiculoSelecionado = min+2;
+        if(!loading){
+          // print('Min index: $min ::: Max index: $max');
+          if(min==0)
+            controller.versiculoSelecionado = 1;
+          else if(max==controller.getVersiculosExibirLeitura.length-1)
+            controller.versiculoSelecionado = max+1;
+          else
+            controller.versiculoSelecionado = min+1;
+        }
       }
     });
   }
 
+  bool loading = true;
   moveScroll() async{
     await Future.delayed(Duration(milliseconds: 100));
     await itemScrollController.scrollTo(
@@ -69,6 +79,7 @@ class _LeituraPageState extends State<LeituraPage>{
         duration: Duration(milliseconds: 800),
         curve: Curves.easeOutCubic
     );
+    loading = false;
   }
 
   @override
@@ -79,15 +90,27 @@ class _LeituraPageState extends State<LeituraPage>{
         title: Observer(builder: (_)=>
             Column(
               children: [
-                Text(controller.nomeLivroSelecionado, style: TextStyle(color: fonteColor, fontSize: fontSize+2),),
-                Text('Capítulo: ${controller.capituloSelecionado}  Versículo: ${controller.versiculoSelecionado}', style: TextStyle(color: Colors.grey.shade300, fontSize: fontSize-3),),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text('${controller.nomeLivroSelecionado} ${controller.capituloSelecionado}', style: TextStyle(color: fonteColor, fontSize: fontSize+4),),
+                    SizedBox(width: 2,),
+                    Text(': ${controller.versiculoSelecionado}', style: TextStyle(color: Colors.grey.shade300, fontSize: fontSize+4),),
+                  ],
+                ),
+                SizedBox(height: 5,),
+                Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: Colors.grey.shade300, fontSize: fontSize-5),),
               ],
-            ),
+            )
         ),
         backgroundColor: Colors.black54,
         elevation: 0.0,
         toolbarHeight: 70,
         centerTitle: true,
+        actions: [
+          SizedBox(width: 50, height: 15, child: dropdownVersion(context: context),),
+        ],
       ),
       body: Observer(builder: (_)=>
           Column(

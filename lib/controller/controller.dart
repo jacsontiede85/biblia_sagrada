@@ -27,6 +27,21 @@ abstract class ControllerBase with Store{
 
   List bible = [];
 
+  List<Map> versions = [
+    {'abrev': 'nvi', 'nome': 'Nova Versão Internacional'},
+    {'abrev': 'acf', 'nome': 'Almeida Corrigida e Fiel'},
+    {'abrev': 'aa' , 'nome': 'Almeida Revisada Imprensa Bíblica'}
+  ];
+
+  @computed
+  String get getNomeVersao{
+    String temp='';
+    for (var element in versions) {
+      if(element['abrev']==versao)
+        temp = element['nome'];
+    }
+    return temp;
+  }
   @computed
   bool get getBible{
     if(versao=='nvi')
@@ -45,7 +60,7 @@ abstract class ControllerBase with Store{
       if(pesquisar.isEmpty)
         itens.add({'abrev': element['abbrev'], 'nome': element['name']});
       else
-        if(element['abbrev'].toString().toLowerCase().contains(pesquisar.toLowerCase()) || element['name'].toString().toLowerCase().contains(pesquisar.toLowerCase()))
+        if(element['abbrev'].toString().toLowerCase().contains(pesquisar.toLowerCase()) || element['name'].toString().toLowerCase().contains(pesquisar.toLowerCase())  || removerAcentos(element['name'].toString()).toLowerCase().contains(pesquisar.toLowerCase()))
           itens.add({'abrev': element['abbrev'], 'nome': element['name']});
     }
     return itens;
@@ -61,6 +76,7 @@ abstract class ControllerBase with Store{
         int count = 1;
         for(var versiculos in capitulos){
           itens.add(count);
+          '$versiculos';
           count++;
         }
         return itens;
@@ -79,6 +95,7 @@ abstract class ControllerBase with Store{
         int count = 1;
         for(var versiculos in capitulos[capituloSelecionado-1]){
           itens.add(count);
+          '$versiculos';
           count++;
         }
         return itens;
@@ -104,4 +121,14 @@ abstract class ControllerBase with Store{
   }
 
 
+  String removerAcentos(String str) {
+    if(str.isEmpty)
+      return '';
+    var comAcento = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž()[]"\'!@#\$%&*+={}ªº,.;?/°|\\';
+    var semAcento = 'AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz()[]"\'!@#\$%&*+={}ªº,.;?/°|\\';
+    for (int i = 0; i < comAcento.length; i++) {
+      str = str.replaceAll(comAcento[i], semAcento[i]);
+    }
+    return str.replaceAll(' ', '-').toLowerCase();
+  }
 }

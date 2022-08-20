@@ -2,6 +2,7 @@
 
 import 'package:biblia_sagrada/controller/controller.dart';
 import 'package:biblia_sagrada/home/home.leitura.page.dart';
+import 'package:biblia_sagrada/home/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -13,7 +14,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widgets{
 
   final controller = GetIt.I.get<Controller>();
   late TabController tabController;
@@ -41,10 +42,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: Text('Bíblia Sagrada', style: TextStyle(color: fonteColor, fontSize: fontSize+2),),
+        title: Observer(builder: (_)=>
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Bíblia Sagrada', style: TextStyle(color: fonteColor, fontSize: fontSize+2),),
+                Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: Colors.grey.shade300, fontSize: fontSize-5),),
+              ],
+            ),
+        ),
         backgroundColor: Colors.black54,
         elevation: 0.0,
-        toolbarHeight: 30,
+        toolbarHeight: 50,
         bottom: TabBar(
           controller: tabController,
           padding: EdgeInsets.only(bottom: 0),
@@ -55,6 +65,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
             Text('Versículo', style: TextStyle(color: fonteColor, fontSize: fontSize),),
           ],
         ),
+        actions: [
+          SizedBox(width: 50, child: dropdownVersion(context: context),)
+        ],
       ),
       body: TabBarView(
         controller: tabController,
@@ -73,7 +86,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                             margin: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 15),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                              color: Colors.grey.shade900,
+                              color: Colors.black87,
                               border: Border.all(
                                   width: 1,
                                   color: Colors.grey.shade600
