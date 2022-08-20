@@ -11,19 +11,23 @@ part 'controller.g.dart';
 
 class Controller = ControllerBase with _$Controller;
 abstract class ControllerBase with Store{
-
+  ControllerBase(){
+    getBible;
+  }
   @observable
   String versao = 'nvi';
   @observable
-  String livroSelecionado = '';
+  String livroSelecionado = 'gn';
   @observable
-  String nomeLivroSelecionado = '';
+  String nomeLivroSelecionado = 'Gênesis';
   @observable
-  int capituloSelecionado = 0;
+  int capituloSelecionado = 1;
   @observable
-  int versiculoSelecionado = 0;
+  int versiculoSelecionado = 1;
   @observable
   String pesquisar='';
+  @observable
+  String pesquisarNaBiblia='';
 
   List bible = [];
 
@@ -42,6 +46,7 @@ abstract class ControllerBase with Store{
     }
     return temp;
   }
+
   @computed
   bool get getBible{
     if(versao=='nvi')
@@ -107,13 +112,27 @@ abstract class ControllerBase with Store{
   @computed
   List get getVersiculosExibirLeitura{
     List<String> vers=[];
-    for (var element in bible) {
-      if( element['abbrev'] == livroSelecionado ){
+    if(pesquisarNaBiblia.isEmpty){
+      for (var element in bible) {
+        if( element['abbrev'] == livroSelecionado ){
+          Object? obj = element['chapters'];
+          List capitulos = jsonDecode(jsonEncode(obj));
+          for(var versiculos in capitulos[capituloSelecionado-1])
+            vers.add(versiculos);
+          return vers;
+        }
+      }
+
+    } else {
+      for (var element in bible) {
         Object? obj = element['chapters'];
         List capitulos = jsonDecode(jsonEncode(obj));
-        for(var versiculos in capitulos[capituloSelecionado-1]){
-          vers.add(versiculos);
-        }
+        print(capitulos);
+        for(var val in getCapitulos)
+          for(var versiculos in capitulos[val-1]){
+            if(removerAcentos(versiculos.toString()).toLowerCase().contains(pesquisarNaBiblia.toLowerCase()))
+              vers.add(versiculos);
+          }
         return vers;
       }
     }

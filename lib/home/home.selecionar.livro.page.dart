@@ -1,20 +1,19 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:biblia_sagrada/controller/controller.dart';
-import 'package:biblia_sagrada/home/home.leitura.page.dart';
 import 'package:biblia_sagrada/home/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomeSelecionarLivroPage extends StatefulWidget {
+  const HomeSelecionarLivroPage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomeSelecionarLivroPage> createState() => _HomeSelecionarLivroPageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widgets{
+class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with TickerProviderStateMixin, Widgets{
 
   final controller = GetIt.I.get<Controller>();
   late TabController tabController;
@@ -26,7 +25,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
   @override
   void initState() {
     tabController = TabController(length: 3, vsync: this );
-    controller.getBible;
+    controller.pesquisar='';
     super.initState();
   }
 
@@ -47,8 +46,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Bíblia Sagrada', style: TextStyle(color: fonteColor, fontSize: fontSize+2),),
-                Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: Colors.grey.shade300, fontSize: fontSize-5),),
+                Text('Bíblia Sagrada', style: TextStyle(color: fonteColor, fontSize: fontSize-2),),
+                Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: Colors.grey.shade300, fontSize: fontSize-6),),
               ],
             ),
         ),
@@ -125,6 +124,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
                                     controller.capituloSelecionado = 1;
                                     controller.versiculoSelecionado = 0;
                                     controller.nomeLivroSelecionado = '${controller.getLivros[index]['nome']}';
+                                    controller.nomeLivroSelecionado = controller.nomeLivroSelecionado.length>15? '${controller.nomeLivroSelecionado.substring(0,12)}...' : controller.nomeLivroSelecionado;
                                     tabController.animateTo(1, duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubic);
                                   },
                                   child: Container(
@@ -215,7 +215,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
                         InkWell(
                           onTap: (){
                             controller.versiculoSelecionado = int.parse(value.toString());
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> LeituraPage()));
+                            Navigator.of(context).pop();
                           },
                           child: ClipRRect(
                               borderRadius: BorderRadius.all(Radius.circular(5.0)),

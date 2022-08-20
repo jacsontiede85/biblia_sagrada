@@ -1,5 +1,5 @@
 import 'package:biblia_sagrada/controller/controller.dart';
-import 'package:biblia_sagrada/home/home.page.dart';
+import 'package:biblia_sagrada/home/home.leitura.page.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: const LeituraPage(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -9,6 +9,13 @@ part of 'controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$Controller on ControllerBase, Store {
+  Computed<String>? _$getNomeVersaoComputed;
+
+  @override
+  String get getNomeVersao =>
+      (_$getNomeVersaoComputed ??= Computed<String>(() => super.getNomeVersao,
+              name: 'ControllerBase.getNomeVersao'))
+          .value;
   Computed<bool>? _$getBibleComputed;
 
   @override
@@ -143,6 +150,22 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
+  late final _$pesquisarNaBibliaAtom =
+      Atom(name: 'ControllerBase.pesquisarNaBiblia', context: context);
+
+  @override
+  String get pesquisarNaBiblia {
+    _$pesquisarNaBibliaAtom.reportRead();
+    return super.pesquisarNaBiblia;
+  }
+
+  @override
+  set pesquisarNaBiblia(String value) {
+    _$pesquisarNaBibliaAtom.reportWrite(value, super.pesquisarNaBiblia, () {
+      super.pesquisarNaBiblia = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
@@ -152,6 +175,8 @@ nomeLivroSelecionado: ${nomeLivroSelecionado},
 capituloSelecionado: ${capituloSelecionado},
 versiculoSelecionado: ${versiculoSelecionado},
 pesquisar: ${pesquisar},
+pesquisarNaBiblia: ${pesquisarNaBiblia},
+getNomeVersao: ${getNomeVersao},
 getBible: ${getBible},
 getLivros: ${getLivros},
 getCapitulos: ${getCapitulos},
