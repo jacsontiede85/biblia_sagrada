@@ -109,32 +109,73 @@ abstract class ControllerBase with Store{
     return itens;
   }
 
+
+  //variavel para monitorar digitação da busca geral, permitir buscar somente após final digitação do usuário.
+  //isso eliminará buscas desnecessárias durante digitação
+  @observable
+  bool loading = false;
+  @observable
+  bool exibirPesquisa = false;
+  int qtteclasdigitadas=0;
+  @action
+  onKeyBoard({required String value}) async{
+    loading = true;
+    qtteclasdigitadas = value.length;
+    await Future.delayed(const Duration(milliseconds: 1000));
+    pesquisarNaBiblia = value;
+    if(qtteclasdigitadas == pesquisarNaBiblia.length)
+      loading = false;
+  }
+
   @computed
   List get getVersiculosExibirLeitura{
-    List<String> vers=[];
-    if(pesquisarNaBiblia.isEmpty){
+    List<Map> vers=[];
+    if( pesquisarNaBiblia.isEmpty ){
       for (var element in bible) {
         if( element['abbrev'] == livroSelecionado ){
           Object? obj = element['chapters'];
           List capitulos = jsonDecode(jsonEncode(obj));
-          for(var versiculos in capitulos[capituloSelecionado-1])
-            vers.add(versiculos);
+          int count =1;
+          for(var versiculos in capitulos[capituloSelecionado-1]) {
+            vers.add({
+              'abrev': element['abbrev'],
+              'nome': element['name'],
+              'capitulo': capituloSelecionado,
+              'versiculo': count,
+              'versiculotext': versiculos,
+              'versao': versao
+            });
+            count++;
+          }
           return vers;
         }
       }
 
     } else {
-      for (var element in bible) {
-        Object? obj = element['chapters'];
-        List capitulos = jsonDecode(jsonEncode(obj));
-        print(capitulos);
-        for(var val in getCapitulos)
-          for(var versiculos in capitulos[val-1]){
-            if(removerAcentos(versiculos.toString()).toLowerCase().contains(pesquisarNaBiblia.toLowerCase()))
-              vers.add(versiculos);
+      if(qtteclasdigitadas==pesquisarNaBiblia.length && !loading)
+        for (var element in bible) {
+          Object? obj = element['chapters'];
+          List capitulos = jsonDecode(jsonEncode(obj));
+
+          for( int i=0; i<capitulos.length; i++) {
+            // print('${element['name']}  ${capitulos.length}   $i');
+            int count = 0;
+            for (var versiculos in capitulos[i]) {
+              if (removerAcentos(versiculos.toString().toLowerCase()).contains(pesquisarNaBiblia.toLowerCase())) {
+                vers.add({
+                  'abrev': element['abbrev'],
+                  'nome': element['name'],
+                  'capitulo': i + 1,
+                  'versiculo': count,
+                  'versiculotext': versiculos,
+                  'versao': versao
+                });
+              }
+              count++;
+            }
           }
-        return vers;
       }
+      return vers;
     }
     return vers;
   }
@@ -148,6 +189,6 @@ abstract class ControllerBase with Store{
     for (int i = 0; i < comAcento.length; i++) {
       str = str.replaceAll(comAcento[i], semAcento[i]);
     }
-    return str.replaceAll(' ', '-').toLowerCase();
+    return str;
   }
 }

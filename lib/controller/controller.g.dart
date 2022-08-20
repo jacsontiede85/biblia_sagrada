@@ -166,6 +166,46 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
+  late final _$loadingAtom =
+      Atom(name: 'ControllerBase.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
+  late final _$exibirPesquisaAtom =
+      Atom(name: 'ControllerBase.exibirPesquisa', context: context);
+
+  @override
+  bool get exibirPesquisa {
+    _$exibirPesquisaAtom.reportRead();
+    return super.exibirPesquisa;
+  }
+
+  @override
+  set exibirPesquisa(bool value) {
+    _$exibirPesquisaAtom.reportWrite(value, super.exibirPesquisa, () {
+      super.exibirPesquisa = value;
+    });
+  }
+
+  late final _$onKeyBoardAsyncAction =
+      AsyncAction('ControllerBase.onKeyBoard', context: context);
+
+  @override
+  Future onKeyBoard({required String value}) {
+    return _$onKeyBoardAsyncAction.run(() => super.onKeyBoard(value: value));
+  }
+
   @override
   String toString() {
     return '''
@@ -176,6 +216,8 @@ capituloSelecionado: ${capituloSelecionado},
 versiculoSelecionado: ${versiculoSelecionado},
 pesquisar: ${pesquisar},
 pesquisarNaBiblia: ${pesquisarNaBiblia},
+loading: ${loading},
+exibirPesquisa: ${exibirPesquisa},
 getNomeVersao: ${getNomeVersao},
 getBible: ${getBible},
 getLivros: ${getLivros},

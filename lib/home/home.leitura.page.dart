@@ -112,6 +112,8 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                         child: Wrap(
                           alignment: WrapAlignment.spaceAround,
                           children: [
+
+                            if(!controller.exibirPesquisa)
                             InkWell(
                               onTap: () async{
                                 await Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeSelecionarLivroPage()));
@@ -153,7 +155,8 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
 
                             SizedBox(width: 5,),
                             SizedBox(height: 26, child: Icon(Icons.font_download, size: 20, color: Colors.white,),),
-
+                            if(controller.exibirPesquisa)
+                            SizedBox(width: 5,),
                           ],
                         )
                     ),
@@ -163,55 +166,66 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                 Positioned(
                   top: 5,
                   right: 10,
-                  child: InkWell(
-                    onTap: (){},
-                    child: Icon(Icons.search_rounded, size: 30, color: Colors.white,),
+                  child: Observer(builder: (_)=>
+                      InkWell(
+                        onTap: (){
+                          controller.exibirPesquisa=!controller.exibirPesquisa;
+                          if(!controller.exibirPesquisa)
+                            controller.pesquisarNaBiblia = '';
+                        },
+                        child: Icon(!controller.exibirPesquisa ? Icons.search_rounded : Icons.search_off_outlined, size: 30, color: !controller.exibirPesquisa ? Colors.white : Colors.redAccent,),
+                      )
                   )
                 ),
 
+                if(controller.exibirPesquisa)
                 Positioned(
                     top: 3,
-                    right: 0,
-                    left: 0,
-                    child: InkWell(
-                      onTap: (){},
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(left: 10, right: 50, top: 0, bottom: 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                              color: Colors.grey.shade900.withOpacity(0.95),
-                              border: Border.all(
-                                  width: 1,
-                                  color: Colors.grey.shade800
-                              ),
+                    right: 50,
+                    left: 50,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                            color: Colors.grey.shade900.withOpacity(0.95),
+                            border: Border.all(
+                                width: 1,
+                                color: Colors.grey.shade800
                             ),
-                            height: 35,
-                            child: TextField(
-                                style: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                  contentPadding: EdgeInsets.only(left: 0, bottom: 5, top: 3, right: 30),
-                                  hintText: 'Pesquisar na Bíblia',
-                                  hintStyle: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    size: 20,
-                                    color: Theme.of(context).colorScheme.secondary,
-                                  ),
+                          ),
+                          height: 35,
+                          child: TextField(
+                              style: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                contentPadding: EdgeInsets.only(left: 0, bottom: 5, top: 3, right: 30),
+                                hintText: 'Pesquisar na Bíblia',
+                                hintStyle: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  size: 20,
+                                  color: Theme.of(context).colorScheme.secondary,
                                 ),
-                                maxLines: 1,
-                                onChanged: (value) => controller.pesquisarNaBiblia = value
-                            ),
-                          )
-                      ),
-                    )
+                              ),
+                              maxLines: 1,
+                              onChanged: (value) => controller.onKeyBoard(value: value)
+                          ),
+                        )
+                    ),
+                ),
+
+
+                Positioned(
+                    top: 14,
+                    right: 65,
+                    child: Observer(builder: (_)=>!controller.loading ? SizedBox() : SizedBox(width:12, height:12, child: CircularProgressIndicator(strokeWidth: 2),),)
                 ),
 
               ],
@@ -239,12 +253,37 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                               padding: EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 15),
                               child: Row(
                                 children: [
+                                  if(controller.pesquisarNaBiblia.isEmpty)
                                   Expanded(
                                     flex: 2,
                                     child: Text(
-                                      '${index+1} ${controller.getVersiculosExibirLeitura[index]}',
+                                      '${index+1} ${controller.getVersiculosExibirLeitura[index]['versiculotext']}',
                                       style: TextStyle(color: fonteColor, fontSize: fontSize+3),
                                     ),
+                                  ),
+
+                                  if(controller.pesquisarNaBiblia.isNotEmpty)
+                                  Expanded(
+                                    flex: 2,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${controller.getVersiculosExibirLeitura[index]['versiculotext']}',
+                                          style: TextStyle(color: fonteColor, fontSize: fontSize+3),
+                                        ),
+                                        Text(
+                                          '${controller.getVersiculosExibirLeitura[index]['nome']}'
+                                          ' (${controller.getVersiculosExibirLeitura[index]['abrev'].toString().toUpperCase()})'
+                                          ' - ${controller.getVersiculosExibirLeitura[index]['capitulo']}'
+                                          ': ${controller.getVersiculosExibirLeitura[index]['versiculo']}'
+                                          ' ${controller.getVersiculosExibirLeitura[index]['versao'].toString().toUpperCase()}'
+                                          ,
+                                          style: TextStyle(color: Colors.grey.shade600, fontSize: fontSize-1),
+                                        ),
+                                      ],
+                                    )
                                   ),
                                 ],
                               )
