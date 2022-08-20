@@ -43,6 +43,21 @@ mixin _$Controller on ControllerBase, Store {
           Computed<List<dynamic>>(() => super.getVersiculos,
               name: 'ControllerBase.getVersiculos'))
       .value;
+  Computed<bool>? _$exibirBotaoAvancarCapituloComputed;
+
+  @override
+  bool get exibirBotaoAvancarCapitulo =>
+      (_$exibirBotaoAvancarCapituloComputed ??= Computed<bool>(
+              () => super.exibirBotaoAvancarCapitulo,
+              name: 'ControllerBase.exibirBotaoAvancarCapitulo'))
+          .value;
+  Computed<bool>? _$exibirBotaoVoltarCapituloComputed;
+
+  @override
+  bool get exibirBotaoVoltarCapitulo => (_$exibirBotaoVoltarCapituloComputed ??=
+          Computed<bool>(() => super.exibirBotaoVoltarCapitulo,
+              name: 'ControllerBase.exibirBotaoVoltarCapitulo'))
+      .value;
   Computed<List<dynamic>>? _$getVersiculosExibirLeituraComputed;
 
   @override
@@ -206,6 +221,31 @@ mixin _$Controller on ControllerBase, Store {
     return _$onKeyBoardAsyncAction.run(() => super.onKeyBoard(value: value));
   }
 
+  late final _$ControllerBaseActionController =
+      ActionController(name: 'ControllerBase', context: context);
+
+  @override
+  dynamic setAvancarCapitulo() {
+    final _$actionInfo = _$ControllerBaseActionController.startAction(
+        name: 'ControllerBase.setAvancarCapitulo');
+    try {
+      return super.setAvancarCapitulo();
+    } finally {
+      _$ControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setVoltarCapitulo() {
+    final _$actionInfo = _$ControllerBaseActionController.startAction(
+        name: 'ControllerBase.setVoltarCapitulo');
+    try {
+      return super.setVoltarCapitulo();
+    } finally {
+      _$ControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
@@ -223,6 +263,8 @@ getBible: ${getBible},
 getLivros: ${getLivros},
 getCapitulos: ${getCapitulos},
 getVersiculos: ${getVersiculos},
+exibirBotaoAvancarCapitulo: ${exibirBotaoAvancarCapitulo},
+exibirBotaoVoltarCapitulo: ${exibirBotaoVoltarCapitulo},
 getVersiculosExibirLeitura: ${getVersiculosExibirLeitura}
     ''';
   }

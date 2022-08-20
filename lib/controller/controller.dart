@@ -109,6 +109,68 @@ abstract class ControllerBase with Store{
     return itens;
   }
 
+  @action
+  setAvancarCapitulo(){
+    if(capituloSelecionado < getCapitulos.length) {
+      capituloSelecionado++;
+    }else{
+      pesquisar ='';
+      List livros = getLivros;
+      int indexLivro = 0;
+      int count=0;
+      for(var item in livros){
+        if(item['abrev'] == livroSelecionado){
+          if(livroSelecionado!='ap')
+            indexLivro = count+1;
+          else indexLivro==65;
+        }
+        count++;
+      }
+      livroSelecionado = getLivros[indexLivro]['abrev'];
+      nomeLivroSelecionado = getLivros[indexLivro]['nome'];
+      capituloSelecionado = 1;
+    }
+    versiculoSelecionado =1;
+  }
+
+  @action
+  setVoltarCapitulo(){
+    if(capituloSelecionado >1) {
+      capituloSelecionado--;
+    }else{
+      pesquisar ='';
+      List livros = getLivros;
+      int indexLivro = 0;
+      int count=0;
+      for(var item in livros){
+        if(item['abrev'] == livroSelecionado){
+          if(livroSelecionado!='gn')
+            indexLivro = count-1;
+          else indexLivro==65;
+        }
+        count++;
+      }
+      livroSelecionado = getLivros[indexLivro]['abrev'];
+      nomeLivroSelecionado = getLivros[indexLivro]['nome'];
+      capituloSelecionado = getCapitulos.length;
+    }
+    versiculoSelecionado =1;
+  }
+
+  @computed
+  bool get exibirBotaoAvancarCapitulo {
+    if(livroSelecionado=='ap' && capituloSelecionado==22)
+      return false;
+    return true;
+  }
+
+  @computed
+  bool get exibirBotaoVoltarCapitulo {
+    if(livroSelecionado=='gn' && capituloSelecionado==1)
+      return false;
+    return true;
+  }
+
 
   //variavel para monitorar digitação da busca geral, permitir buscar somente após final digitação do usuário.
   //isso eliminará buscas desnecessárias durante digitação
@@ -159,7 +221,7 @@ abstract class ControllerBase with Store{
 
           for( int i=0; i<capitulos.length; i++) {
             // print('${element['name']}  ${capitulos.length}   $i');
-            int count = 0;
+            int count = 1;
             for (var versiculos in capitulos[i]) {
               if (removerAcentos(versiculos.toString().toLowerCase()).contains(pesquisarNaBiblia.toLowerCase())) {
                 vers.add({
