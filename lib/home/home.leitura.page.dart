@@ -105,7 +105,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.black87,
+      color: controller.backgroundColor,
       child: Observer(builder: (_)=>
           Stack(
             children: [
@@ -125,7 +125,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                 children: [
                                   Text('Bíblia Sagrada', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize),),
                                   SizedBox(height: 1,),
-                                  Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: Colors.grey.shade300, fontSize: controller.fontSize-5),),
+                                  Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: controller.backgroundColor == Colors.white ? Colors.grey.shade600 : Colors.grey.shade300, fontSize: controller.fontSize-5),),
                                 ],
                               ),
                               Container(
@@ -146,7 +146,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                           child: ClipRRect(
                                               borderRadius: BorderRadius.circular(10.0),
                                               child: Container(
-                                                color: Colors.grey.shade900,
+                                                color: controller.backgroundColor == Colors.white ? Colors.grey.shade400 : Colors.grey.shade800,
                                                 //height: 26,
                                                 padding: EdgeInsets.only(left: 10, right: 2),
                                                 child: Row(
@@ -154,9 +154,12 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisSize: MainAxisSize.min,
                                                   children: [
-                                                    Text('${controller.nomeLivroSelecionado} ${controller.capituloSelecionado}', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),),
+                                                    Text('${controller.nomeLivroSelecionado} ${controller.capituloSelecionado}',
+                                                      style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),
+                                                    ),
                                                     SizedBox(width: 2,),
-                                                    Text(': ${controller.versiculoSelecionado}', style: TextStyle(color: Colors.grey.shade300, fontSize: controller.fontSize-2),),
+                                                    Text(': ${controller.versiculoSelecionado}',
+                                                      style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),),
                                                     SizedBox(width: 2,),
                                                     Icon(Icons.arrow_drop_down_sharp, color: Colors.white, size: 25,)
                                                   ],
@@ -169,13 +172,26 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                       ClipRRect(
                                           borderRadius: BorderRadius.circular(10.0),
                                           child: Container(
-                                            color: Colors.grey.shade900,
+                                            color: controller.backgroundColor == Colors.white ? Colors.grey.shade400 : Colors.grey.shade800,
                                             child: SizedBox(width: 60, height: 26, child: dropdownVersion(context: context),),
                                           )
                                       ),
 
                                       SizedBox(width: 5,),
-                                      SizedBox(height: 26, child: Icon(Icons.brightness_6, size: 20, color: Colors.white,),),
+                                      InkWell(
+                                        onTap: (){
+                                          setState((){
+                                            if( controller.backgroundColor == Colors.white ) {
+                                              controller.backgroundColor = Colors.black87;
+                                              controller.fonteColor = Colors.white;
+                                            }else {
+                                              controller.backgroundColor = Colors.white;
+                                              controller.fonteColor = Colors.black;
+                                            }
+                                          });
+                                        },
+                                        child: SizedBox(height: 26, child: Icon(Icons.brightness_6, size: 20, color: controller.backgroundColor == Colors.white ? Colors.grey.shade500 : Colors.white),),
+                                      ),
 
                                       SizedBox(width: 5,),
                                       InkWell(
@@ -189,7 +205,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                         },
                                         child: Stack(
                                           children: [
-                                            SizedBox(height: 26, child: Icon(Icons.font_download, size: 20, color: Colors.white,),),
+                                            SizedBox(height: 26, child: Icon(Icons.font_download, size: 20, color: controller.backgroundColor == Colors.white ? Colors.grey.shade500 : Colors.white,),),
                                             if(controller.fontSize.floor()>16)
                                             Positioned(
                                               bottom: 0,
@@ -283,7 +299,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                         ],
                       )
                   ),
-                  backgroundColor: Colors.black54,
+                  backgroundColor: controller.backgroundColor,
                   elevation: 0.0,
                   toolbarHeight: controller.toolbarHeight,
                   centerTitle: true,

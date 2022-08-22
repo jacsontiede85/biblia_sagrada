@@ -38,17 +38,9 @@ class Widgets{
                           children: [
                             Flexible(child: Text(
                               '${value['abrev']}'.toUpperCase(),
-                              style: TextStyle(fontSize: controller.fontSize-6, fontWeight: FontWeight.w600),
+                              style: TextStyle(fontSize: controller.fontSize-3, fontWeight: FontWeight.w600),
                               textAlign: TextAlign.left,
                             ),),
-                            // if(exibirDesc??true)
-                            // SizedBox(width: 4,),
-                            // if(exibirDesc??true)
-                            // Flexible(child: Text(
-                            //   '${value['nome']}',
-                            //   style: TextStyle(fontSize: 9.0, fontWeight: FontWeight.w400),
-                            //   textAlign: TextAlign.left,
-                            // ),)
                           ],
                         )
                     )
