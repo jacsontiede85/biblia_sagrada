@@ -17,7 +17,7 @@ class Widgets{
               elevation: 16,
               focusColor: Colors.transparent,
               dropdownColor: Theme.of(context).colorScheme.secondary,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: controller.fonteColor),
               underline: Container(height: 0, color: Theme.of(context).colorScheme.secondary,),
               onChanged: (String? value) async {
                 controller.versao = value??'nvi';
@@ -38,7 +38,7 @@ class Widgets{
                           children: [
                             Flexible(child: Text(
                               '${value['abrev']}'.toUpperCase(),
-                              style: TextStyle(fontSize: 10.0, fontWeight: FontWeight.w600),
+                              style: TextStyle(fontSize: controller.fontSize-6, fontWeight: FontWeight.w600),
                               textAlign: TextAlign.left,
                             ),),
                             // if(exibirDesc??true)

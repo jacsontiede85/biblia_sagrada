@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:biblia_sagrada/versoes/aa.dart';
 import 'package:biblia_sagrada/versoes/acf.dart';
 import 'package:biblia_sagrada/versoes/nvi.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'controller.g.dart';
 
@@ -14,6 +15,14 @@ abstract class ControllerBase with Store{
   ControllerBase(){
     getBible;
   }
+
+  @observable
+  double fontSize = 16;
+  @observable
+  Color fonteColor = Colors.white;
+  @observable
+  Color backgroundColor = Colors.black87;
+
   @observable
   String versao = 'nvi';
   @observable

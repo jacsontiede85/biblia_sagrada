@@ -67,6 +67,54 @@ mixin _$Controller on ControllerBase, Store {
               name: 'ControllerBase.getVersiculosExibirLeitura'))
           .value;
 
+  late final _$fontSizeAtom =
+      Atom(name: 'ControllerBase.fontSize', context: context);
+
+  @override
+  double get fontSize {
+    _$fontSizeAtom.reportRead();
+    return super.fontSize;
+  }
+
+  @override
+  set fontSize(double value) {
+    _$fontSizeAtom.reportWrite(value, super.fontSize, () {
+      super.fontSize = value;
+    });
+  }
+
+  late final _$fonteColorAtom =
+      Atom(name: 'ControllerBase.fonteColor', context: context);
+
+  @override
+  Color get fonteColor {
+    _$fonteColorAtom.reportRead();
+    return super.fonteColor;
+  }
+
+  @override
+  set fonteColor(Color value) {
+    _$fonteColorAtom.reportWrite(value, super.fonteColor, () {
+      super.fonteColor = value;
+    });
+  }
+
+  late final _$backgroundColorAtom =
+      Atom(name: 'ControllerBase.backgroundColor', context: context);
+
+  @override
+  Color get backgroundColor {
+    _$backgroundColorAtom.reportRead();
+    return super.backgroundColor;
+  }
+
+  @override
+  set backgroundColor(Color value) {
+    _$backgroundColorAtom.reportWrite(value, super.backgroundColor, () {
+      super.backgroundColor = value;
+    });
+  }
+
   late final _$versaoAtom =
       Atom(name: 'ControllerBase.versao', context: context);
 
@@ -265,6 +313,9 @@ mixin _$Controller on ControllerBase, Store {
   @override
   String toString() {
     return '''
+fontSize: ${fontSize},
+fonteColor: ${fonteColor},
+backgroundColor: ${backgroundColor},
 versao: ${versao},
 livroSelecionado: ${livroSelecionado},
 nomeLivroSelecionado: ${nomeLivroSelecionado},

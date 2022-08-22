@@ -20,10 +20,6 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
   ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   final controller = GetIt.I.get<Controller>();
 
-  double fontSize = 16;
-  Color fonteColor = Colors.white;
-  Color backgroundColor = Colors.black87;
-
   @override
   void initState() {
     addListenerScroll();
@@ -114,7 +110,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
           Stack(
             children: [
               Scaffold(
-                backgroundColor: backgroundColor,
+                backgroundColor: controller.backgroundColor,
                 appBar: AppBar(
                   titleSpacing: 3.0,
                   title: Observer(builder: (_)=>
@@ -127,9 +123,9 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
 
                               Column(
                                 children: [
-                                  Text('Bíblia Sagrada', style: TextStyle(color: fonteColor, fontSize: fontSize),),
+                                  Text('Bíblia Sagrada', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize),),
                                   SizedBox(height: 1,),
-                                  Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: Colors.grey.shade300, fontSize: fontSize-5),),
+                                  Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: Colors.grey.shade300, fontSize: controller.fontSize-5),),
                                 ],
                               ),
                               Container(
@@ -151,16 +147,16 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                               borderRadius: BorderRadius.circular(10.0),
                                               child: Container(
                                                 color: Colors.grey.shade900,
-                                                height: 26,
+                                                //height: 26,
                                                 padding: EdgeInsets.only(left: 10, right: 2),
                                                 child: Row(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisSize: MainAxisSize.min,
                                                   children: [
-                                                    Text('${controller.nomeLivroSelecionado} ${controller.capituloSelecionado}', style: TextStyle(color: fonteColor, fontSize: fontSize-2),),
+                                                    Text('${controller.nomeLivroSelecionado} ${controller.capituloSelecionado}', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),),
                                                     SizedBox(width: 2,),
-                                                    Text(': ${controller.versiculoSelecionado}', style: TextStyle(color: Colors.grey.shade300, fontSize: fontSize-2),),
+                                                    Text(': ${controller.versiculoSelecionado}', style: TextStyle(color: Colors.grey.shade300, fontSize: controller.fontSize-2),),
                                                     SizedBox(width: 2,),
                                                     Icon(Icons.arrow_drop_down_sharp, color: Colors.white, size: 25,)
                                                   ],
@@ -178,11 +174,39 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                           )
                                       ),
 
-                                      // SizedBox(width: 5,),
-                                      // SizedBox(height: 26, child: Icon(Icons.brightness_6, size: 20, color: Colors.white,),),
-                                      //
-                                      // SizedBox(width: 5,),
-                                      // SizedBox(height: 26, child: Icon(Icons.font_download, size: 20, color: Colors.white,),),
+                                      SizedBox(width: 5,),
+                                      SizedBox(height: 26, child: Icon(Icons.brightness_6, size: 20, color: Colors.white,),),
+
+                                      SizedBox(width: 5,),
+                                      InkWell(
+                                        onTap: (){
+                                          setState((){
+                                            if(controller.fontSize==22)
+                                              controller.fontSize = 16;
+                                            else
+                                              controller.fontSize++;
+                                          });
+                                        },
+                                        child: Stack(
+                                          children: [
+                                            SizedBox(height: 26, child: Icon(Icons.font_download, size: 20, color: Colors.white,),),
+                                            if(controller.fontSize.floor()>16)
+                                            Positioned(
+                                              bottom: 0,
+                                              right: 0,
+                                              child: ClipOval(
+                                                child: Container(
+                                                  width: 15,
+                                                  height: 15,
+                                                  color: Theme.of(context).primaryColor,
+                                                  alignment: Alignment.center,
+                                                  child: Text('+${controller.fontSize.floor()}', style: TextStyle(fontSize: 7.5),),
+                                                ),
+                                              )
+                                            )
+                                          ],
+                                        )
+                                      ),
                                       if(controller.exibirPesquisa)
                                         SizedBox(width: 5,),
                                     ],
@@ -287,7 +311,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                       moveScroll();
                                     },
                                     child: Container(
-                                        padding: EdgeInsets.only(left: 10, right: 5, bottom: 5, top: 15),
+                                        padding: EdgeInsets.only(left: 10, right: 5, bottom: 5, top: 10),
                                         margin: EdgeInsets.only(bottom: controller.getVersiculosExibirLeitura.length-1 == index ? 100.0 : 0.0),
                                         child: Row(
                                           children: [
@@ -295,10 +319,23 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                             if(controller.pesquisarNaBiblia.isEmpty)
                                               Expanded(
                                                 flex: 2,
-                                                child: Text(
-                                                  '${index+1} ${controller.getVersiculosExibirLeitura[index]['versiculotext']}',
-                                                  style: TextStyle(color: fonteColor, fontSize: fontSize+3, height: 1.8),
-                                                ),
+                                                child: Stack(
+                                                  children: [
+                                                    Positioned(
+                                                      top: 4,
+                                                      child: Text(
+                                                        '${index+1}',
+                                                        style: TextStyle(color: controller.fonteColor.withOpacity(0.6), fontSize: controller.fontSize, height: 1.8),
+                                                        textAlign: TextAlign.end,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '${index<9?'   ': index<99?'     ': '      '}${controller.getVersiculosExibirLeitura[index]['versiculotext']}',
+                                                      style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize+3, height: 1.8),
+                                                      textAlign: TextAlign.start,
+                                                    ),
+                                                  ],
+                                                )
                                               ),
 
                                             if(controller.pesquisarNaBiblia.isNotEmpty)
@@ -310,7 +347,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                                     children: [
                                                       Text(
                                                         '${controller.getVersiculosExibirLeitura[index]['versiculotext']}',
-                                                        style: TextStyle(color: fonteColor, fontSize: fontSize+3),
+                                                        style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize+3),
                                                       ),
                                                       SizedBox(height: 3,),
                                                       Text(
@@ -320,7 +357,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                                             ': ${controller.getVersiculosExibirLeitura[index]['versiculo']}'
                                                             ' ${controller.getVersiculosExibirLeitura[index]['versao'].toString().toUpperCase()}'
                                                         ,
-                                                        style: TextStyle(color: Colors.grey.shade600, fontSize: fontSize-1),
+                                                        style: TextStyle(color: Colors.grey.shade600, fontSize: controller.fontSize-1),
                                                       ),
                                                     ],
                                                   )
