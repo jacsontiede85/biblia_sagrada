@@ -4,6 +4,7 @@ import 'package:biblia_sagrada/controller/controller.dart';
 import 'package:biblia_sagrada/home/home.selecionar.livro.page.dart';
 import 'package:biblia_sagrada/home/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -25,6 +26,9 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
     addListenerScroll();
     moveScroll();
     super.initState();
+
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
   }
 
   @override
@@ -327,7 +331,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                       moveScroll();
                                     },
                                     child: Container(
-                                        padding: EdgeInsets.only(left: 10, right: 5, bottom: 5, top: 10),
+                                        padding: EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 10),
                                         margin: EdgeInsets.only(bottom: controller.getVersiculosExibirLeitura.length-1 == index ? 100.0 : 0.0),
                                         child: Row(
                                           children: [
@@ -338,7 +342,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                                 child: Stack(
                                                   children: [
                                                     Positioned(
-                                                      top: 4,
+                                                      top: 5,
                                                       child: Text(
                                                         '${index+1}',
                                                         style: TextStyle(color: controller.fonteColor.withOpacity(0.6), fontSize: controller.fontSize, height: 1.8),
