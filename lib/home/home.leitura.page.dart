@@ -36,11 +36,15 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
     super.dispose();
   }
 
+  int positionScroll=0;
+  int oldPositionScroll = 0;
   addListenerScroll(){
     itemScrollController = ItemScrollController();
     itemPositionsListener = ItemPositionsListener.create();
 
     itemPositionsListener.itemPositions.addListener((){
+      oldPositionScroll = positionScroll;
+
       // ignore: unused_local_variable
       int min, max, index;
       if (itemPositionsListener.itemPositions.value.isNotEmpty) {
@@ -61,6 +65,8 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
         ).index;
         if(!pausarAcaoListennerScroll){
           // print('Min index: $min ::: Max index: $max');
+          positionScroll = min;
+          controleToolbarHeight();
           if(min==0)
             controller.versiculoSelecionado = 1;
           else if(max==controller.getVersiculosExibirLeitura.length-1)
@@ -81,6 +87,23 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
         curve: Curves.easeOutCubic
     );
     pausarAcaoListennerScroll = false;
+  }
+
+
+  controleToolbarHeight() async{
+    if(positionScroll > oldPositionScroll) {
+      if(controller.toolbarHeight==100)
+        for (int i = 100; i >= 0; i--) {
+          await Future.delayed(Duration(microseconds: 900));
+          controller.toolbarHeight = i.toDouble();
+        }
+    } else if(positionScroll < oldPositionScroll) {
+      if(controller.toolbarHeight==0)
+        for (int i = 0; i <= 100; i++) {
+          await Future.delayed(Duration(microseconds: 1000));
+          controller.toolbarHeight = i.toDouble();
+        }
+    }
   }
 
   @override
@@ -238,7 +261,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                   ),
                   backgroundColor: Colors.black54,
                   elevation: 0.0,
-                  toolbarHeight: 100,
+                  toolbarHeight: controller.toolbarHeight,
                   centerTitle: true,
                 ),
                 body: Observer(builder: (_)=>
@@ -264,15 +287,17 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                       moveScroll();
                                     },
                                     child: Container(
-                                        padding: EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 15),
+                                        padding: EdgeInsets.only(left: 10, right: 5, bottom: 5, top: 15),
+                                        margin: EdgeInsets.only(bottom: controller.getVersiculosExibirLeitura.length-1 == index ? 100.0 : 0.0),
                                         child: Row(
                                           children: [
+
                                             if(controller.pesquisarNaBiblia.isEmpty)
                                               Expanded(
                                                 flex: 2,
                                                 child: Text(
                                                   '${index+1} ${controller.getVersiculosExibirLeitura[index]['versiculotext']}',
-                                                  style: TextStyle(color: fonteColor, fontSize: fontSize+3),
+                                                  style: TextStyle(color: fonteColor, fontSize: fontSize+3, height: 1.8),
                                                 ),
                                               ),
 
@@ -300,6 +325,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                                     ],
                                                   )
                                               ),
+
                                           ],
                                         )
                                     ),
@@ -317,7 +343,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                   bottom: 5,
                   child: ClipOval(
                     child: Container(
-                      color: Colors.grey.withOpacity(0.1),
+                      color: Colors.grey.withOpacity(0.3),
                       child: IconButton(
                         color: Theme.of(context).primaryColor.withOpacity(0.7),
                         iconSize: 25,
@@ -338,7 +364,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                   bottom: 5,
                   child: ClipOval(
                     child: Container(
-                      color: Colors.grey.withOpacity(0.1),
+                      color: Colors.grey.withOpacity(0.3),
                       child: IconButton(
                         color: Theme.of(context).primaryColor.withOpacity(0.7),
                         iconSize: 25,

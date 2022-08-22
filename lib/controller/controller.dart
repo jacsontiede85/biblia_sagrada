@@ -29,6 +29,9 @@ abstract class ControllerBase with Store{
   @observable
   String pesquisarNaBiblia='';
 
+  @observable
+  double toolbarHeight = 100;
+
   List bible = [];
 
   List<Map> versions = [

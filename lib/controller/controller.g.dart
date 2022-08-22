@@ -181,6 +181,22 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
+  late final _$toolbarHeightAtom =
+      Atom(name: 'ControllerBase.toolbarHeight', context: context);
+
+  @override
+  double get toolbarHeight {
+    _$toolbarHeightAtom.reportRead();
+    return super.toolbarHeight;
+  }
+
+  @override
+  set toolbarHeight(double value) {
+    _$toolbarHeightAtom.reportWrite(value, super.toolbarHeight, () {
+      super.toolbarHeight = value;
+    });
+  }
+
   late final _$loadingAtom =
       Atom(name: 'ControllerBase.loading', context: context);
 
@@ -256,6 +272,7 @@ capituloSelecionado: ${capituloSelecionado},
 versiculoSelecionado: ${versiculoSelecionado},
 pesquisar: ${pesquisar},
 pesquisarNaBiblia: ${pesquisarNaBiblia},
+toolbarHeight: ${toolbarHeight},
 loading: ${loading},
 exibirPesquisa: ${exibirPesquisa},
 getNomeVersao: ${getNomeVersao},
