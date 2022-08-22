@@ -4,11 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 void main() {
-  Controller controller = Controller();
-  // controller.getVersiculos(versao: 'nvi', livro: 'gn', capitulo: 50);
-  // controller.getCapitulos(versao: 'nvi', livro: 'dt');
-  // controller.getNumVersiculos(versao: 'nvi', livro: 'ap', capitulo: 22);
-
   GetIt getIt = GetIt.I;
   getIt.registerSingleton<Controller>(Controller());
 

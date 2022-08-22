@@ -18,10 +18,6 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
   final controller = GetIt.I.get<Controller>();
   late TabController tabController;
 
-  double fontSize = 16;
-  Color fonteColor = Colors.white;
-  Color backgroundColor = Colors.black87;
-
   @override
   void initState() {
     tabController = TabController(length: 3, vsync: this );
@@ -39,19 +35,20 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: controller.backgroundColor,
       appBar: AppBar(
         title: Observer(builder: (_)=>
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Bíblia Sagrada', style: TextStyle(color: fonteColor, fontSize: fontSize-2),),
-                Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: Colors.grey.shade300, fontSize: fontSize-6),),
+                Text('Bíblia Sagrada', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),),
+                Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: controller.backgroundColor == Colors.white ? Colors.grey.shade500 : Colors.grey.shade300, fontSize: controller.fontSize-7),),
               ],
             ),
         ),
-        backgroundColor: Colors.black54,
+        iconTheme: IconThemeData(color: controller.backgroundColor == Colors.white ? Theme.of(context).primaryColor : Colors.white),
+        backgroundColor: controller.backgroundColor,
         elevation: 0.0,
         toolbarHeight: 50,
         bottom: TabBar(
@@ -59,13 +56,13 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
           padding: EdgeInsets.only(bottom: 0),
           labelPadding: EdgeInsets.only(bottom: 7),
           tabs: [
-            Text('Livro', style: TextStyle(color: fonteColor, fontSize: fontSize),),
-            Text('Capítulo', style: TextStyle(color: fonteColor, fontSize: fontSize),),
-            Text('Versículo', style: TextStyle(color: fonteColor, fontSize: fontSize),),
+            Text('Livro', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize),),
+            Text('Capítulo', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize),),
+            Text('Versículo', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize),),
           ],
         ),
         actions: [
-          SizedBox(width: 50, child: dropdownVersion(context: context),)
+          SizedBox(width: 60, child: dropdownVersion(context: context),)
         ],
       ),
       body: TabBarView(
@@ -85,10 +82,10 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
                             margin: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 15),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                              color: Colors.black87,
+                              color: controller.backgroundColor==Colors.white ? Colors.grey.shade200 : Colors.black87,
                               border: Border.all(
                                   width: 1,
-                                  color: Colors.grey.shade600
+                                  color: controller.backgroundColor==Colors.white ? Colors.grey.shade300 : Colors.grey.shade600,
                               ),
                             ),
                             height: 35,
@@ -130,8 +127,8 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
                                   child: Container(
                                       padding: EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 15),
                                       decoration: BoxDecoration(
-                                        border: Border(top: BorderSide(color: Colors.grey.shade900, width: 0.5, ),),
-                                        color: controller.livroSelecionado == '${controller.getLivros[index]['abrev']}' ? Colors.grey.shade800 : Colors.transparent,
+                                        border: Border(top: BorderSide(color: controller.backgroundColor==Colors.white ? Colors.grey.shade400 : Colors.grey.shade900, width: 0.5, ),),
+                                        color: controller.livroSelecionado == '${controller.getLivros[index]['abrev']}' ? controller.backgroundColor==Colors.white ? Theme.of(context).primaryColor.withOpacity(0.1) : Colors.grey.shade800 : Colors.transparent,
                                       ),
                                       child: Row(
                                         children: [
@@ -139,7 +136,7 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
                                             flex: 2,
                                             child: Text(
                                               '${controller.getLivros[index]['abrev']}'.toUpperCase(),
-                                              style: TextStyle(color: fonteColor, fontSize: fontSize-2),
+                                              style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),
                                             ),
                                           ),
                                           SizedBox(width: 10,),
@@ -147,7 +144,7 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
                                             flex: 5,
                                             child: Text(
                                               '${controller.getLivros[index]['nome']}',
-                                              style: TextStyle(color: fonteColor, fontSize: fontSize),
+                                              style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize),
                                             ),
                                           ),
                                         ],
@@ -192,7 +189,7 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
                                 height: 60,
                                 child: Text(
                                   '$value'.toUpperCase(),
-                                  style: TextStyle(color: fonteColor, fontSize: fontSize-2),
+                                  style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),
                                 ),
                               )
                           ),
@@ -234,7 +231,7 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
                                 height: 60,
                                 child: Text(
                                   '$value'.toUpperCase(),
-                                  style: TextStyle(color: fonteColor, fontSize: fontSize-2),
+                                  style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),
                                 ),
                               )
                           ),
