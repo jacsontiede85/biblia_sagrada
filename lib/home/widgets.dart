@@ -36,10 +36,13 @@ class Widgets{
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            Flexible(child: Text(
-                              '${value['abrev']}'.toUpperCase(),
-                              style: TextStyle(fontSize: controller.fontSize-3, fontWeight: FontWeight.w600),
-                              textAlign: TextAlign.left,
+                            Flexible(child: Padding(
+                              padding: EdgeInsets.only(left: 5),
+                              child: Text(
+                                '${value['abrev']}'.toUpperCase(),
+                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                                textAlign: TextAlign.left,
+                              ),
                             ),),
                           ],
                         )

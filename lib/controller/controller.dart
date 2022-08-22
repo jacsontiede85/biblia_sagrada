@@ -17,7 +17,7 @@ abstract class ControllerBase with Store{
   }
 
   @observable
-  double fontSize = 16;
+  double fontSize = 22;
   @observable
   Color fonteColor = Colors.white;
   @observable

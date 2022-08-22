@@ -4,6 +4,7 @@ import 'package:biblia_sagrada/controller/controller.dart';
 import 'package:biblia_sagrada/home/home.selecionar.livro.page.dart';
 import 'package:biblia_sagrada/home/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -25,6 +26,9 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
     addListenerScroll();
     moveScroll();
     super.initState();
+
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
   }
 
   @override
@@ -123,9 +127,9 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
 
                               Column(
                                 children: [
-                                  Text('Bíblia Sagrada', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize),),
+                                  Text('Bíblia Sagrada', style: TextStyle(color: controller.fonteColor, fontSize: 20),),
                                   SizedBox(height: 1,),
-                                  Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: controller.backgroundColor == Colors.white ? Colors.grey.shade600 : Colors.grey.shade300, fontSize: controller.fontSize-5),),
+                                  Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: controller.backgroundColor == Colors.white ? Colors.grey.shade600 : Colors.grey.shade300, fontSize: 14),),
                                 ],
                               ),
                               Container(
@@ -155,11 +159,11 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                                   mainAxisSize: MainAxisSize.min,
                                                   children: [
                                                     Text('${controller.nomeLivroSelecionado} ${controller.capituloSelecionado}',
-                                                      style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),
+                                                      style: TextStyle(color: controller.fonteColor, fontSize: 17),
                                                     ),
                                                     SizedBox(width: 2,),
                                                     Text(': ${controller.versiculoSelecionado}',
-                                                      style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),),
+                                                      style: TextStyle(color: controller.fonteColor, fontSize: 17),),
                                                     SizedBox(width: 2,),
                                                     Icon(Icons.arrow_drop_down_sharp, color: Colors.white, size: 25,)
                                                   ],
@@ -173,7 +177,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                           borderRadius: BorderRadius.circular(10.0),
                                           child: Container(
                                             color: controller.backgroundColor == Colors.white ? Colors.grey.shade400 : Colors.grey.shade800,
-                                            child: SizedBox(width: 60, height: 26, child: dropdownVersion(context: context),),
+                                            child: SizedBox(width: 70, height: 25, child: dropdownVersion(context: context),),
                                           )
                                       ),
 
@@ -197,8 +201,8 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                       InkWell(
                                         onTap: (){
                                           setState((){
-                                            if(controller.fontSize==22)
-                                              controller.fontSize = 16;
+                                            if(controller.fontSize==30)
+                                              controller.fontSize = 22;
                                             else
                                               controller.fontSize++;
                                           });
@@ -206,7 +210,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                         child: Stack(
                                           children: [
                                             SizedBox(height: 26, child: Icon(Icons.font_download, size: 20, color: controller.backgroundColor == Colors.white ? Colors.grey.shade500 : Colors.white,),),
-                                            if(controller.fontSize.floor()>16)
+                                            if(controller.fontSize.floor()>22)
                                             Positioned(
                                               bottom: 0,
                                               right: 0,
@@ -327,7 +331,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                       moveScroll();
                                     },
                                     child: Container(
-                                        padding: EdgeInsets.only(left: 10, right: 5, bottom: 5, top: 10),
+                                        padding: EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 10),
                                         margin: EdgeInsets.only(bottom: controller.getVersiculosExibirLeitura.length-1 == index ? 100.0 : 0.0),
                                         child: Row(
                                           children: [
@@ -338,7 +342,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                                 child: Stack(
                                                   children: [
                                                     Positioned(
-                                                      top: 4,
+                                                      top: 5,
                                                       child: Text(
                                                         '${index+1}',
                                                         style: TextStyle(color: controller.fonteColor.withOpacity(0.6), fontSize: controller.fontSize, height: 1.8),

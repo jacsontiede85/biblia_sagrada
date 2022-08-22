@@ -42,8 +42,8 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Bíblia Sagrada', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),),
-                Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: controller.backgroundColor == Colors.white ? Colors.grey.shade500 : Colors.grey.shade300, fontSize: controller.fontSize-7),),
+                Text('Bíblia Sagrada', style: TextStyle(color: controller.fonteColor, fontSize: 20),),
+                Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: controller.backgroundColor == Colors.white ? Colors.grey.shade500 : Colors.grey.shade300, fontSize: 15),),
               ],
             ),
         ),
@@ -56,9 +56,9 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
           padding: EdgeInsets.only(bottom: 0),
           labelPadding: EdgeInsets.only(bottom: 7),
           tabs: [
-            Text('Livro', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize),),
-            Text('Capítulo', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize),),
-            Text('Versículo', style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize),),
+            Text('Livro', style: TextStyle(color: controller.fonteColor, fontSize: 20),),
+            Text('Capítulo', style: TextStyle(color: controller.fonteColor, fontSize: 20),),
+            Text('Versículo', style: TextStyle(color: controller.fonteColor, fontSize: 20),),
           ],
         ),
         actions: [
