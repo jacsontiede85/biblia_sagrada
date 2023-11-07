@@ -41,7 +41,7 @@ class Widgets{
                               padding: EdgeInsets.only(left: 5),
                               child: Text(
                                 '${value['abrev']}'.toUpperCase(),
-                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                                 textAlign: TextAlign.left,
                               ),
                             ),),

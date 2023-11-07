@@ -158,7 +158,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                               borderRadius: BorderRadius.circular(10.0),
                                               child: Container(
                                                 color: controller.backgroundColor == Colors.white ? Colors.grey.shade400 : Colors.grey.shade800,
-                                                //height: 26,
+                                                height: 30,
                                                 padding: EdgeInsets.only(left: 10, right: 2),
                                                 child: Row(
                                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -166,11 +166,11 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                                   mainAxisSize: MainAxisSize.min,
                                                   children: [
                                                     Text('${controller.nomeLivroSelecionado} ${controller.capituloSelecionado}',
-                                                      style: TextStyle(color: controller.fonteColor, fontSize: 17),
+                                                      style: TextStyle(color: controller.fonteColor, fontSize: 14),
                                                     ),
                                                     SizedBox(width: 2,),
                                                     Text(': ${controller.versiculoSelecionado}',
-                                                      style: TextStyle(color: controller.fonteColor, fontSize: 17),),
+                                                      style: TextStyle(color: controller.fonteColor, fontSize: 14),),
                                                     SizedBox(width: 2,),
                                                     Icon(Icons.arrow_drop_down_sharp, color: Colors.white, size: 25,)
                                                   ],
@@ -186,7 +186,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                               borderRadius: BorderRadius.circular(10.0),
                                               child: Container(
                                                 color: controller.backgroundColor == Colors.white ? Colors.grey.shade400 : Colors.grey.shade800,
-                                                child: SizedBox(width: 70, height: 25, child: dropdownVersion(context: context),),
+                                                child: SizedBox(width: 70, height: 30, child: dropdownVersion(context: context),),
                                               )
                                           ),
                                         ),
@@ -303,65 +303,6 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                               ),
                             ],
                           ),
-
-                          // Positioned(
-                          //     top: 5,
-                          //     right: 10,
-                          //     child: Observer(builder: (_)=>
-                          //         InkWell(
-                          //           onTap: (){
-                          //             controller.exibirPesquisa=!controller.exibirPesquisa;
-                          //             if(!controller.exibirPesquisa)
-                          //               controller.pesquisarNaBiblia = '';
-                          //           },
-                          //           child: Icon(!controller.exibirPesquisa ? Icons.search_rounded : Icons.search_off_outlined, size: 30, color: !controller.exibirPesquisa ? Colors.grey.shade600 : Colors.redAccent,),
-                          //         )
-                          //     )
-                          // ),
-
-                          // if(controller.exibirPesquisa)
-                          //   Positioned(
-                          //     top: 3,
-                          //     right: 50,
-                          //     left: 50,
-                          //     child: ClipRRect(
-                          //         borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                          //         child: Container(
-                          //           alignment: Alignment.center,
-                          //           margin: EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 15),
-                          //           decoration: BoxDecoration(
-                          //             borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                          //             color: Colors.grey.shade900.withOpacity(0.95),
-                          //             border: Border.all(
-                          //                 width: 1,
-                          //                 color: Colors.grey.shade800
-                          //             ),
-                          //           ),
-                          //           height: 35,
-                          //           child: TextField(
-                          //               style: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
-                          //               decoration: InputDecoration(
-                          //                 border: InputBorder.none,
-                          //                 focusedBorder: InputBorder.none,
-                          //                 enabledBorder: InputBorder.none,
-                          //                 errorBorder: InputBorder.none,
-                          //                 disabledBorder: InputBorder.none,
-                          //                 contentPadding: EdgeInsets.only(left: 0, bottom: 5, top: 3, right: 30),
-                          //                 hintText: 'Pesquisar na Bíblia',
-                          //                 hintStyle: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
-                          //                 prefixIcon: Icon(
-                          //                   Icons.search,
-                          //                   size: 20,
-                          //                   color: Theme.of(context).colorScheme.secondary,
-                          //                 ),
-                          //               ),
-                          //               maxLines: 1,
-                          //               onChanged: (value) => controller.onKeyBoard(value: value)
-                          //           ),
-                          //         )
-                          //     ),
-                          //   ),
-
 
                           Positioned(
                               top: 27,
