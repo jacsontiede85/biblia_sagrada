@@ -7,6 +7,7 @@ import 'package:biblia_sagrada/versoes/nvi.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:string_similarity/string_similarity.dart';
+import 'package:string_similarity/string_similarity.dart';
 part 'controller.g.dart';
 
 //flutter packages pub run build_runner watch --delete-conflicting-outputs
@@ -236,11 +237,7 @@ abstract class ControllerBase with Store{
             // print('${element['name']}  ${capitulos.length}   $i');
             int count = 1;
             for (var versiculos in capitulos[i]) {
-              final comparison = pesquisarNaBiblia.toLowerCase().similarityTo( versiculos.toString().toLowerCase() ); // or StringSimilarity.compareTwoStrings('healed', 'sealed')
-              if(comparison>=0.8)
-                print('ooooooooookkkk');
-              else
-                print(comparison);
+              final comparison = StringSimilarity.compareTwoStrings( versiculos.toString().toLowerCase(), pesquisarNaBiblia.toLowerCase() ); // or StringSimilarity.compareTwoStrings('healed', 'sealed')
               if (comparison>=0.29 || removerAcentos(versiculos.toString().toLowerCase()).contains(pesquisarNaBiblia.toLowerCase())) {
                 vers.add({
                   'abrev': element['abbrev'],
