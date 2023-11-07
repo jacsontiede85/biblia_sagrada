@@ -131,13 +131,14 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
 
-                              Column(
-                                children: [
-                                  Text('Bíblia Sagrada', style: TextStyle(color: controller.fonteColor, fontSize: 20),),
-                                  SizedBox(height: 1,),
-                                  Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: controller.backgroundColor == Colors.white ? Colors.grey.shade600 : Colors.grey.shade300, fontSize: 14),),
-                                ],
-                              ),
+                              // Column(
+                              //   children: [
+                              //     Text('Bíblia Sagrada', style: TextStyle(color: controller.fonteColor, fontSize: 20),),
+                              //     SizedBox(height: 1,),
+                              //     Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: controller.backgroundColor == Colors.white ? Colors.grey.shade600 : Colors.grey.shade300, fontSize: 14),),
+                              //   ],
+                              // ),
+
                               Container(
                                   color: Colors.transparent,
                                   width: MediaQuery.of(context).size.width,
@@ -178,131 +179,193 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                           ),
                                         ),
 
-                                      SizedBox(width: 5,),
-                                      ClipRRect(
-                                          borderRadius: BorderRadius.circular(10.0),
-                                          child: Container(
-                                            color: controller.backgroundColor == Colors.white ? Colors.grey.shade400 : Colors.grey.shade800,
-                                            child: SizedBox(width: 70, height: 25, child: dropdownVersion(context: context),),
+                                      if(!controller.exibirPesquisa)
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5),
+                                          child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                              child: Container(
+                                                color: controller.backgroundColor == Colors.white ? Colors.grey.shade400 : Colors.grey.shade800,
+                                                child: SizedBox(width: 70, height: 25, child: dropdownVersion(context: context),),
+                                              )
+                                          ),
+                                        ),
+
+
+                                      if(!controller.exibirPesquisa)
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5),
+                                          child: InkWell(
+                                            onTap: (){
+                                              setState((){
+                                                if( controller.backgroundColor == Colors.white ) {
+                                                  controller.backgroundColor = Colors.black87;
+                                                  controller.fonteColor = Colors.white;
+                                                }else {
+                                                  controller.backgroundColor = Colors.white;
+                                                  controller.fonteColor = Colors.black;
+                                                }
+                                              });
+                                            },
+                                            child: SizedBox(height: 26, child: Icon(Icons.brightness_6, size: 20, color: controller.backgroundColor == Colors.white ? Colors.grey.shade500 : Colors.white),),
+                                          ),
+                                        ),
+
+
+                                      if(!controller.exibirPesquisa)
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5),
+                                          child: InkWell(
+                                              onTap: (){
+                                                setState((){
+                                                  if(controller.fontSize==30)
+                                                    controller.fontSize = 22;
+                                                  else
+                                                    controller.fontSize++;
+                                                });
+                                              },
+                                              child: Stack(
+                                                children: [
+                                                  SizedBox(height: 26, child: Icon(Icons.font_download, size: 20, color: controller.backgroundColor == Colors.white ? Colors.grey.shade500 : Colors.white,),),
+                                                  if(controller.fontSize.floor()>22)
+                                                    Positioned(
+                                                        bottom: 0,
+                                                        right: 0,
+                                                        child: ClipOval(
+                                                          child: Container(
+                                                            width: 15,
+                                                            height: 15,
+                                                            color: Theme.of(context).primaryColor,
+                                                            alignment: Alignment.center,
+                                                            child: Text('+${controller.fontSize.floor()}', style: TextStyle(fontSize: 7.5),),
+                                                          ),
+                                                        )
+                                                    )
+                                                ],
+                                              )
+                                          ),
+                                        ),
+
+
+                                      if(controller.exibirPesquisa)
+                                        ClipRRect(
+                                            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              margin: EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                                color: Colors.grey.shade900.withOpacity(0.95),
+                                                border: Border.all(
+                                                    width: 1,
+                                                    color: Colors.grey.shade800
+                                                ),
+                                              ),
+                                              height: 35,
+                                              width: MediaQuery.of(context).size.width*0.75,
+                                              child: TextField(
+                                                  style: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    focusedBorder: InputBorder.none,
+                                                    enabledBorder: InputBorder.none,
+                                                    errorBorder: InputBorder.none,
+                                                    disabledBorder: InputBorder.none,
+                                                    contentPadding: EdgeInsets.only(left: 0, bottom: 5, top: 3, right: 30),
+                                                    hintText: 'Pesquisar na Bíblia',
+                                                    hintStyle: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
+                                                    prefixIcon: Icon(
+                                                      Icons.search,
+                                                      size: 20,
+                                                      color: Theme.of(context).colorScheme.secondary,
+                                                    ),
+                                                  ),
+                                                  maxLines: 1,
+                                                  onChanged: (value) => controller.onKeyBoard(value: value)
+                                              ),
+                                            )
+                                        ),
+
+                                      Observer(builder: (_)=>
+                                          InkWell(
+                                            onTap: (){
+                                              controller.exibirPesquisa=!controller.exibirPesquisa;
+                                              if(!controller.exibirPesquisa)
+                                                controller.pesquisarNaBiblia = '';
+                                            },
+                                            child: Icon(!controller.exibirPesquisa ? Icons.search_rounded : Icons.search_off_outlined, size: 30, color: !controller.exibirPesquisa ? Colors.grey.shade600 : Colors.redAccent,),
                                           )
                                       ),
 
-                                      SizedBox(width: 5,),
-                                      InkWell(
-                                        onTap: (){
-                                          setState((){
-                                            if( controller.backgroundColor == Colors.white ) {
-                                              controller.backgroundColor = Colors.black87;
-                                              controller.fonteColor = Colors.white;
-                                            }else {
-                                              controller.backgroundColor = Colors.white;
-                                              controller.fonteColor = Colors.black;
-                                            }
-                                          });
-                                        },
-                                        child: SizedBox(height: 26, child: Icon(Icons.brightness_6, size: 20, color: controller.backgroundColor == Colors.white ? Colors.grey.shade500 : Colors.white),),
-                                      ),
 
-                                      SizedBox(width: 5,),
-                                      InkWell(
-                                        onTap: (){
-                                          setState((){
-                                            if(controller.fontSize==30)
-                                              controller.fontSize = 22;
-                                            else
-                                              controller.fontSize++;
-                                          });
-                                        },
-                                        child: Stack(
-                                          children: [
-                                            SizedBox(height: 26, child: Icon(Icons.font_download, size: 20, color: controller.backgroundColor == Colors.white ? Colors.grey.shade500 : Colors.white,),),
-                                            if(controller.fontSize.floor()>22)
-                                            Positioned(
-                                              bottom: 0,
-                                              right: 0,
-                                              child: ClipOval(
-                                                child: Container(
-                                                  width: 15,
-                                                  height: 15,
-                                                  color: Theme.of(context).primaryColor,
-                                                  alignment: Alignment.center,
-                                                  child: Text('+${controller.fontSize.floor()}', style: TextStyle(fontSize: 7.5),),
-                                                ),
-                                              )
-                                            )
-                                          ],
-                                        )
-                                      ),
-                                      if(controller.exibirPesquisa)
-                                        SizedBox(width: 5,),
                                     ],
                                   )
                               ),
                             ],
                           ),
 
+                          // Positioned(
+                          //     top: 5,
+                          //     right: 10,
+                          //     child: Observer(builder: (_)=>
+                          //         InkWell(
+                          //           onTap: (){
+                          //             controller.exibirPesquisa=!controller.exibirPesquisa;
+                          //             if(!controller.exibirPesquisa)
+                          //               controller.pesquisarNaBiblia = '';
+                          //           },
+                          //           child: Icon(!controller.exibirPesquisa ? Icons.search_rounded : Icons.search_off_outlined, size: 30, color: !controller.exibirPesquisa ? Colors.grey.shade600 : Colors.redAccent,),
+                          //         )
+                          //     )
+                          // ),
+
+                          // if(controller.exibirPesquisa)
+                          //   Positioned(
+                          //     top: 3,
+                          //     right: 50,
+                          //     left: 50,
+                          //     child: ClipRRect(
+                          //         borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                          //         child: Container(
+                          //           alignment: Alignment.center,
+                          //           margin: EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 15),
+                          //           decoration: BoxDecoration(
+                          //             borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                          //             color: Colors.grey.shade900.withOpacity(0.95),
+                          //             border: Border.all(
+                          //                 width: 1,
+                          //                 color: Colors.grey.shade800
+                          //             ),
+                          //           ),
+                          //           height: 35,
+                          //           child: TextField(
+                          //               style: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
+                          //               decoration: InputDecoration(
+                          //                 border: InputBorder.none,
+                          //                 focusedBorder: InputBorder.none,
+                          //                 enabledBorder: InputBorder.none,
+                          //                 errorBorder: InputBorder.none,
+                          //                 disabledBorder: InputBorder.none,
+                          //                 contentPadding: EdgeInsets.only(left: 0, bottom: 5, top: 3, right: 30),
+                          //                 hintText: 'Pesquisar na Bíblia',
+                          //                 hintStyle: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
+                          //                 prefixIcon: Icon(
+                          //                   Icons.search,
+                          //                   size: 20,
+                          //                   color: Theme.of(context).colorScheme.secondary,
+                          //                 ),
+                          //               ),
+                          //               maxLines: 1,
+                          //               onChanged: (value) => controller.onKeyBoard(value: value)
+                          //           ),
+                          //         )
+                          //     ),
+                          //   ),
+
+
                           Positioned(
-                              top: 5,
-                              right: 10,
-                              child: Observer(builder: (_)=>
-                                  InkWell(
-                                    onTap: (){
-                                      controller.exibirPesquisa=!controller.exibirPesquisa;
-                                      if(!controller.exibirPesquisa)
-                                        controller.pesquisarNaBiblia = '';
-                                    },
-                                    child: Icon(!controller.exibirPesquisa ? Icons.search_rounded : Icons.search_off_outlined, size: 30, color: !controller.exibirPesquisa ? Colors.grey.shade600 : Colors.redAccent,),
-                                  )
-                              )
-                          ),
-
-                          if(controller.exibirPesquisa)
-                            Positioned(
-                              top: 3,
-                              right: 50,
-                              left: 50,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 15),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                                      color: Colors.grey.shade900.withOpacity(0.95),
-                                      border: Border.all(
-                                          width: 1,
-                                          color: Colors.grey.shade800
-                                      ),
-                                    ),
-                                    height: 35,
-                                    child: TextField(
-                                        style: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                          enabledBorder: InputBorder.none,
-                                          errorBorder: InputBorder.none,
-                                          disabledBorder: InputBorder.none,
-                                          contentPadding: EdgeInsets.only(left: 0, bottom: 5, top: 3, right: 30),
-                                          hintText: 'Pesquisar na Bíblia',
-                                          hintStyle: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
-                                          prefixIcon: Icon(
-                                            Icons.search,
-                                            size: 20,
-                                            color: Theme.of(context).colorScheme.secondary,
-                                          ),
-                                        ),
-                                        maxLines: 1,
-                                        onChanged: (value) => controller.onKeyBoard(value: value)
-                                    ),
-                                  )
-                              ),
-                            ),
-
-
-                          Positioned(
-                              top: 14,
-                              right: 65,
+                              top: 27,
+                              right: 90,
                               child: Observer(builder: (_)=>!controller.loading ? SizedBox() : SizedBox(width:12, height:12, child: CircularProgressIndicator(strokeWidth: 2),),)
                           ),
 
@@ -311,7 +374,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                   ),
                   backgroundColor: controller.backgroundColor,
                   elevation: 0.0,
-                  toolbarHeight: controller.toolbarHeight,
+                  toolbarHeight: 60,//controller.toolbarHeight,
                   centerTitle: true,
                 ),
 
@@ -397,13 +460,13 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                           ),
                         ),
 
-                        Container(
-                          color: Colors.transparent,
-                          height: 53,
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.only(top: 3),
-                          child: AdWidget(ad: banner1),
-                        )
+                        // Container(
+                        //   color: Colors.transparent,
+                        //   height: 53,
+                        //   width: MediaQuery.of(context).size.width,
+                        //   padding: EdgeInsets.only(top: 3),
+                        //   child: AdWidget(ad: banner1),
+                        // )
                       ],
                     )
                 ),
