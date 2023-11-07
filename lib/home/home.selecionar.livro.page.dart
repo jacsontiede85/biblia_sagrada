@@ -5,6 +5,7 @@ import 'package:biblia_sagrada/home/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class HomeSelecionarLivroPage extends StatefulWidget {
   const HomeSelecionarLivroPage({Key? key}) : super(key: key);
@@ -17,17 +18,30 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
 
   final controller = GetIt.I.get<Controller>();
   late TabController tabController;
+  late BannerAd banner1;
+  late BannerAd banner2;
+  late BannerAd banner3;
 
   @override
   void initState() {
     tabController = TabController(length: 3, vsync: this );
     controller.pesquisar='';
     super.initState();
+
+    banner1 = getBanner300x50;
+    banner1.load();
+    banner2 = getBanner300x50;
+    banner2.load();
+    banner3 = getBanner300x50;
+    banner3.load();
   }
 
   @override
   void dispose(){
     tabController.dispose();
+    banner1.dispose();
+    banner2.dispose();
+    banner3.dispose();
     super.dispose();
   }
 
@@ -152,7 +166,15 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
                                   ),
                                 )
                         ),
-                      )
+                      ),
+
+                      Container(
+                        color: Colors.transparent,
+                        height: 53,
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.only(top: 3),
+                        child: AdWidget(ad: banner1),
+                      ),
                     ],
                   )
               )
@@ -161,84 +183,132 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
 
           //SELEÇÃO DE CAPITULOS
           Observer(builder: (_)=>
-              Padding(
-                padding: EdgeInsets.only(top: 15),
-                child: SingleChildScrollView(
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    children: controller.getCapitulos.map((value) =>
-                        InkWell(
-                          onTap: (){
-                            controller.capituloSelecionado = int.parse(value.toString());
-                            tabController.animateTo(2, duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubic);
-                          },
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                              child: Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                                  color: controller.capituloSelecionado == int.parse(value.toString()) ? Colors.grey.shade800 : Colors.transparent,
-                                  border: Border.all(
-                                      width: 1,
-                                      color: Colors.grey.shade800
-                                  ),
-                                ),
-                                width: 60,
-                                height: 60,
-                                child: Text(
-                                  '$value'.toUpperCase(),
-                                  style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),
-                                ),
-                              )
-                          ),
+              Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 15),
+                    child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Wrap(
+                              alignment: WrapAlignment.center,
+                              children: controller.getCapitulos.map((value) =>
+                                  InkWell(
+                                    onTap: (){
+                                      controller.capituloSelecionado = int.parse(value.toString());
+                                      tabController.animateTo(2, duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubic);
+                                    },
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          margin: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                            color: controller.capituloSelecionado == int.parse(value.toString()) ? Colors.grey.shade800 : Colors.transparent,
+                                            border: Border.all(
+                                                width: 1,
+                                                color: Colors.grey.shade800
+                                            ),
+                                          ),
+                                          width: 60,
+                                          height: 60,
+                                          child: Text(
+                                            '$value'.toUpperCase(),
+                                            style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),
+                                          ),
+                                        )
+                                    ),
+                                  )
+                              ).toList(),
+                            ),
+
+                            SizedBox(
+                              height: 70,
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                          ],
                         )
-                    ).toList(),
+                    ),
                   ),
-                ),
+
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      color: Colors.transparent,
+                      height: 53,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(top: 3),
+                      child: AdWidget(ad: banner2),
+                    ),
+                  ),
+                ],
               )
           ),
 
 
           //SELEÇÃO DE VERSICULOS
           Observer(builder: (_)=>
-              Padding(
-                padding: EdgeInsets.only(top: 15),
-                child: SingleChildScrollView(
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    children: controller.getVersiculos.map((value) =>
-                        InkWell(
-                          onTap: (){
-                            controller.versiculoSelecionado = int.parse(value.toString());
-                            Navigator.of(context).pop();
-                          },
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                              child: Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                                  color: controller.versiculoSelecionado == int.parse(value.toString()) ? Colors.grey.shade800 : Colors.transparent,
-                                  border: Border.all(
-                                      width: 1,
-                                      color: Colors.grey.shade800
-                                  ),
-                                ),
-                                width: 60,
-                                height: 60,
-                                child: Text(
-                                  '$value'.toUpperCase(),
-                                  style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),
-                                ),
-                              )
-                          ),
+              Stack(
+                children: [
+                  Padding(
+                      padding: EdgeInsets.only(top: 15),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Wrap(
+                              alignment: WrapAlignment.center,
+                              children: controller.getVersiculos.map((value) =>
+                                  InkWell(
+                                    onTap: (){
+                                      controller.versiculoSelecionado = int.parse(value.toString());
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          margin: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                            color: controller.versiculoSelecionado == int.parse(value.toString()) ? Colors.grey.shade800 : Colors.transparent,
+                                            border: Border.all(
+                                                width: 1,
+                                                color: Colors.grey.shade800
+                                            ),
+                                          ),
+                                          width: 60,
+                                          height: 60,
+                                          child: Text(
+                                            '$value'.toUpperCase(),
+                                            style: TextStyle(color: controller.fonteColor, fontSize: controller.fontSize-2),
+                                          ),
+                                        )
+                                    ),
+                                  )
+                              ).toList(),
+                            ),
+
+                            SizedBox(
+                              height: 70,
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                          ],
                         )
-                    ).toList(),
+                      )
                   ),
-                )
+
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      color: Colors.transparent,
+                      height: 53,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(top: 3),
+                      child: AdWidget(ad: banner3),
+                    ),
+                  )
+                ],
               )
           ),
 

@@ -1,8 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.tisasistemas.biblia_sagrada">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-feature android:name="android.hardware.location.gps" />
+
    <application
+        android:name="androidx.multidex.MultiDexApplication"
         android:label="Bíblia Sagrada"
-        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -30,5 +36,13 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+       <meta-data
+           android:name="com.google.android.gms.ads.APPLICATION_ID"
+           android:value="ca-app-pub-3923445449692502~3202668202" />
+       <meta-data
+           android:name="ADMOB_ALLOW_LOCATION_FOR_ADS"
+           android:value="true" />
+
     </application>
 </manifest>

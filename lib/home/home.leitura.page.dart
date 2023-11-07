@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class LeituraPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
   ItemScrollController itemScrollController = ItemScrollController();
   ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   final controller = GetIt.I.get<Controller>();
+  late BannerAd banner1;
 
   @override
   void initState() {
@@ -29,11 +31,15 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+
+    banner1 = getBanner300x50;
+    banner1.load();
   }
 
   @override
   void dispose(){
     super.dispose();
+    banner1.dispose();
   }
 
   int positionScroll=0;
@@ -308,6 +314,7 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                   toolbarHeight: controller.toolbarHeight,
                   centerTitle: true,
                 ),
+
                 body: Observer(builder: (_)=>
                     Column(
                       children: [
@@ -388,6 +395,14 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
                                     ),
                                   )
                           ),
+                        ),
+
+                        Container(
+                          color: Colors.transparent,
+                          height: 53,
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.only(top: 3),
+                          child: AdWidget(ad: banner1),
                         )
                       ],
                     )
@@ -396,14 +411,14 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
 
               if(controller.exibirBotaoAvancarCapitulo)
                 Positioned(
-                  right: 10,
-                  bottom: 5,
+                  right: 5,
+                  bottom: 2,
                   child: ClipOval(
                     child: Container(
-                      color: Colors.grey.withOpacity(0.3),
+                      color: Colors.grey.withOpacity(0.5),
                       child: IconButton(
-                        color: Theme.of(context).primaryColor.withOpacity(0.7),
-                        iconSize: 25,
+                        color: Theme.of(context).primaryColor.withOpacity(0.9),
+                        iconSize: 30,
                         icon: Icon(Icons.arrow_forward),
                         onPressed: () {
                           controller.setAvancarCapitulo();
@@ -417,14 +432,14 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
 
               if(controller.exibirBotaoVoltarCapitulo)
                 Positioned(
-                  left: 10,
-                  bottom: 5,
+                  left: 5,
+                  bottom: 2,
                   child: ClipOval(
                     child: Container(
-                      color: Colors.grey.withOpacity(0.3),
+                      color: Colors.grey.withOpacity(0.5),
                       child: IconButton(
-                        color: Theme.of(context).primaryColor.withOpacity(0.7),
-                        iconSize: 25,
+                        color: Theme.of(context).primaryColor.withOpacity(0.9),
+                        iconSize: 30,
                         icon: Icon(Icons.arrow_back),
                         onPressed: (){
                           controller.setVoltarCapitulo();
@@ -441,4 +456,5 @@ class _LeituraPageState extends State<LeituraPage> with Widgets{
       )
     );
   }
+
 }

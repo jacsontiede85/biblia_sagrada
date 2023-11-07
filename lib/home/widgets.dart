@@ -4,6 +4,7 @@ import 'package:biblia_sagrada/controller/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class Widgets{
   Widget dropdownVersion({required BuildContext context, bool? exibirDesc}){
@@ -51,4 +52,17 @@ class Widgets{
               }).toList())
       );
     }
+
+  //banner 300 x 50
+  BannerAd get getBanner300x50 => BannerAd(
+    adUnitId: 'ca-app-pub-3923445449692502/5218720788',
+    // adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    size: AdSize.banner,
+    request: const AdRequest(),
+    listener: BannerAdListener(
+      onAdFailedToLoad: (Ad ad, LoadAdError error) {
+        ad.dispose();
+      },
+    ),
+  );
 }
