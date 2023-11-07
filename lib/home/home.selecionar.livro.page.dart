@@ -57,7 +57,7 @@ class _HomeSelecionarLivroPageState extends State<HomeSelecionarLivroPage> with 
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Bíblia Sagrada', style: TextStyle(color: controller.fonteColor, fontSize: 20),),
-                Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: controller.backgroundColor == Colors.white ? Colors.grey.shade500 : Colors.grey.shade300, fontSize: 15),),
+                Text('${controller.getNomeVersao} (${controller.versao.toUpperCase()})', style: TextStyle(color: controller.backgroundColor == Colors.white ? Colors.grey.shade500 : Colors.grey.shade300, fontSize: 12),),
               ],
             ),
         ),
