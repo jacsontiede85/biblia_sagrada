@@ -7,7 +7,6 @@ import 'package:biblia_sagrada/versoes/nvi.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:string_similarity/string_similarity.dart';
-import 'package:string_similarity/string_similarity.dart';
 part 'controller.g.dart';
 
 //flutter packages pub run build_runner watch --delete-conflicting-outputs
